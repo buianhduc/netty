@@ -1,0 +1,2983 @@
+<!DOCTYPE html>
+<html class="client-nojs" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>Instruction reference - NESdev Wiki</title>
+<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"agLwTBUBDU0oQAA5YEoJqQAAAUA","wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Instruction_reference","wgTitle":"Instruction reference","wgCurRevisionId":23486,"wgRevisionId":23486,"wgArticleId":2673,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgPageViewLanguage":"en","wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Instruction_reference","wgRelevantArticleId":2673,"wgIsProbablyEditable":false,"wgRelevantPageIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgCheckUserClientHintsHeadersJsApi":["brands","architecture","bitness","fullVersionList","mobile","model","platform","platformVersion"]};
+RLSTATE={"site.styles":"ready","user.styles":"ready","user":"ready","user.options":"loading","skins.monobook.styles":"ready","jquery.tablesorter.styles":"ready","jquery.makeCollapsible.styles":"ready"};RLPAGEMODULES=["site","mediawiki.page.ready","jquery.tablesorter","jquery.makeCollapsible","skins.monobook.scripts","ext.checkUser.clientHints"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.impl(function(){return["user.options@12s5i",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+}];});});</script>
+<link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=jquery.makeCollapsible.styles%7Cjquery.tablesorter.styles%7Cskins.monobook.styles&amp;only=styles&amp;skin=monobook">
+<script async="" src="/w/load.php?lang=en&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=monobook"></script>
+<meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=site.styles&amp;only=styles&amp;skin=monobook">
+<meta name="generator" content="MediaWiki 1.45.1">
+<meta name="robots" content="max-image-preview:standard">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.25, maximum-scale=5.0">
+<link rel="search" type="application/opensearchdescription+xml" href="/w/rest.php/v1/search" title="NESdev Wiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="https://www.nesdev.org/w/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="NESdev Wiki Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom">
+	<meta property="og:type" content="article">
+
+	<meta property="og:site_name" content="NESdev Wiki">
+
+	<meta property="og:title" content="Instruction reference">
+
+	<meta property="og:url" content="https://www.nesdev.org/wiki/Instruction_reference">
+
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Instruction_reference rootpage-Instruction_reference skin-monobook action-view skin--responsive"><div id="globalWrapper">
+	<div id="column-content">
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+			<div id="siteNotice"></div>
+			<div class="mw-indicators">
+			</div>
+			<h1 id="firstHeading" class="firstHeading mw-first-heading"><span class="mw-page-title-main">Instruction reference</span></h1>
+			<div id="bodyContent" class="monobook-body">
+				<div id="siteSub">From NESdev Wiki</div>
+				<div id="contentSub" ><div id="mw-content-subtitle"></div></div>
+				
+				<div id="jump-to-nav"></div><a href="#column-one" class="mw-jump-link">Jump to navigation</a><a href="#searchInput" class="mw-jump-link">Jump to search</a>
+				<!-- start content -->
+				<div id="mw-content-text" class="mw-body-content"><div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><table class="wikitable" style="text-align: center">
+<caption>Official 6502 Instructions
+</caption>
+<tbody><tr>
+<td><a href="#ADC">ADC</a></td>
+<td><a href="#AND">AND</a></td>
+<td><a href="#ASL">ASL</a></td>
+<td><a href="#BCC">BCC</a></td>
+<td><a href="#BCS">BCS</a></td>
+<td><a href="#BEQ">BEQ</a></td>
+<td><a href="#BIT">BIT</a></td>
+<td><a href="#BMI">BMI</a></td>
+<td><a href="#BNE">BNE</a></td>
+<td><a href="#BPL">BPL</a></td>
+<td><a href="#BRK">BRK</a></td>
+<td><a href="#BVC">BVC</a></td>
+<td><a href="#BVS">BVS</a></td>
+<td><a href="#CLC">CLC</a>
+</td></tr>
+<tr>
+<td><a href="#CLD">CLD</a></td>
+<td><a href="#CLI">CLI</a></td>
+<td><a href="#CLV">CLV</a></td>
+<td><a href="#CMP">CMP</a></td>
+<td><a href="#CPX">CPX</a></td>
+<td><a href="#CPY">CPY</a></td>
+<td><a href="#DEC">DEC</a></td>
+<td><a href="#DEX">DEX</a></td>
+<td><a href="#DEY">DEY</a></td>
+<td><a href="#EOR">EOR</a></td>
+<td><a href="#INC">INC</a></td>
+<td><a href="#INX">INX</a></td>
+<td><a href="#INY">INY</a></td>
+<td><a href="#JMP">JMP</a>
+</td></tr>
+<tr>
+<td><a href="#JSR">JSR</a></td>
+<td><a href="#LDA">LDA</a></td>
+<td><a href="#LDX">LDX</a></td>
+<td><a href="#LDY">LDY</a></td>
+<td><a href="#LSR">LSR</a></td>
+<td><a href="#NOP">NOP</a></td>
+<td><a href="#ORA">ORA</a></td>
+<td><a href="#PHA">PHA</a></td>
+<td><a href="#PHP">PHP</a></td>
+<td><a href="#PLA">PLA</a></td>
+<td><a href="#PLP">PLP</a></td>
+<td><a href="#ROL">ROL</a></td>
+<td><a href="#ROR">ROR</a></td>
+<td><a href="#RTI">RTI</a>
+</td></tr>
+<tr>
+<td><a href="#RTS">RTS</a></td>
+<td><a href="#SBC">SBC</a></td>
+<td><a href="#SEC">SEC</a></td>
+<td><a href="#SED">SED</a></td>
+<td><a href="#SEI">SEI</a></td>
+<td><a href="#STA">STA</a></td>
+<td><a href="#STX">STX</a></td>
+<td><a href="#STY">STY</a></td>
+<td><a href="#TAX">TAX</a></td>
+<td><a href="#TAY">TAY</a></td>
+<td><a href="#TSX">TSX</a></td>
+<td><a href="#TXA">TXA</a></td>
+<td><a href="#TXS">TXS</a></td>
+<td><a href="#TYA">TYA</a>
+</td></tr></tbody></table>
+<div class="mw-heading mw-heading2"><h2 id="Official_instructions_by_type">Official instructions by type</h2></div>
+<table class="wikitable sortable" style="text-align: center">
+<tbody><tr>
+<th>Type
+</th>
+<th colspan="8" class="unsortable">Instructions
+</th></tr>
+<tr>
+<td style="text-align: left">Access
+</td>
+<td style="border-right: none;"><a href="#LDA">LDA</a>
+</td>
+<td style="border-left: none;"><a href="#STA">STA</a>
+</td>
+<td style="border-right: none;"><a href="#LDX">LDX</a>
+</td>
+<td style="border-left: none;"><a href="#STX">STX</a>
+</td>
+<td style="border-right: none;"><a href="#LDY">LDY</a>
+</td>
+<td style="border-left: none;"><a href="#STY">STY</a>
+</td>
+<td style="border-right: none;">
+</td>
+<td style="border-left: none;">
+</td></tr>
+<tr>
+<td style="text-align: left">Transfer
+</td>
+<td style="border-right: none;"><a href="#TAX">TAX</a>
+</td>
+<td style="border-left: none;"><a href="#TXA">TXA</a>
+</td>
+<td style="border-right: none;"><a href="#TAY">TAY</a>
+</td>
+<td style="border-left: none;"><a href="#TYA">TYA</a>
+</td>
+<td style="border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none;">
+</td></tr>
+<tr>
+<td style="text-align: left">Arithmetic
+</td>
+<td style="border-right: none;"><a href="#ADC">ADC</a>
+</td>
+<td style="border-left: none;"><a href="#SBC">SBC</a>
+</td>
+<td style="border-right: none;"><a href="#INC">INC</a>
+</td>
+<td style="border-left: none;"><a href="#DEC">DEC</a>
+</td>
+<td style="border-right: none;"><a href="#INC">INX</a>
+</td>
+<td style="border-left: none;"><a href="#DEC">DEX</a>
+</td>
+<td style="border-right: none;"><a href="#INY">INY</a>
+</td>
+<td style="border-left: none;"><a href="#DEY">DEY</a>
+</td></tr>
+<tr>
+<td style="text-align: left">Shift
+</td>
+<td style="border-right: none;"><a href="#ASL">ASL</a>
+</td>
+<td style="border-left: none;"><a href="#LSR">LSR</a>
+</td>
+<td style="border-right: none;"><a href="#ROL">ROL</a>
+</td>
+<td style="border-left: none;"><a href="#ROR">ROR</a>
+</td>
+<td style="border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none;">
+</td></tr>
+<tr>
+<td style="text-align: left">Bitwise
+</td>
+<td><a href="#AND">AND</a>
+</td>
+<td><a href="#ORA">ORA</a>
+</td>
+<td><a href="#EOR">EOR</a>
+</td>
+<td><a href="#BIT">BIT</a>
+</td>
+<td style="border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none;">
+</td></tr>
+<tr>
+<td style="text-align: left">Compare
+</td>
+<td><a href="#CMP">CMP</a>
+</td>
+<td><a href="#CPX">CPX</a>
+</td>
+<td><a href="#CPY">CPY</a>
+</td>
+<td style="border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none;">
+</td></tr>
+<tr>
+<td style="text-align: left">Branch
+</td>
+<td style="border-right: none;"><a href="#BCC">BCC</a>
+</td>
+<td style="border-left: none;"><a href="#BCS">BCS</a>
+</td>
+<td style="border-right: none;"><a href="#BEQ">BEQ</a>
+</td>
+<td style="border-left: none;"><a href="#BNE">BNE</a>
+</td>
+<td style="border-right: none;"><a href="#BPL">BPL</a>
+</td>
+<td style="border-left: none;"><a href="#BMI">BMI</a>
+</td>
+<td style="border-right: none;"><a href="#BVC">BVC</a>
+</td>
+<td style="border-left: none;"><a href="#BVS">BVS</a>
+</td></tr>
+<tr>
+<td style="text-align: left">Jump
+</td>
+<td><a href="#JMP">JMP</a>
+</td>
+<td style="border-right: none;"><a href="#JSR">JSR</a>
+</td>
+<td style="border-left: none;"><a href="#RTS">RTS</a>
+</td>
+<td style="border-right: none;"><a href="#BRK">BRK</a>
+</td>
+<td style="border-left: none;"><a href="#RTI">RTI</a>
+</td>
+<td style="border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none;">
+</td></tr>
+<tr>
+<td style="text-align: left">Stack
+</td>
+<td style="border-right: none;"><a href="#PHA">PHA</a>
+</td>
+<td style="border-left: none;"><a href="#PLA">PLA</a>
+</td>
+<td style="border-right: none;"><a href="#PHP">PHP</a>
+</td>
+<td style="border-left: none;"><a href="#PLP">PLP</a>
+</td>
+<td style="border-right: none;"><a href="#TXS">TXS</a>
+</td>
+<td style="border-left: none;"><a href="#TSX">TSX</a>
+</td>
+<td style="border-right: none;">
+</td>
+<td style="border-left: none;">
+</td></tr>
+<tr>
+<td style="text-align: left">Flags
+</td>
+<td style="border-right: none;"><a href="#CLC">CLC</a>
+</td>
+<td style="border-left: none;"><a href="#SEC">SEC</a>
+</td>
+<td style="border-right: none;"><a href="#CLI">CLI</a>
+</td>
+<td style="border-left: none;"><a href="#SEI">SEI</a>
+</td>
+<td style="border-right: none;"><a href="#CLD">CLD</a>
+</td>
+<td style="border-left: none;"><a href="#SED">SED</a>
+</td>
+<td><a href="#CLV">CLV</a>
+</td>
+<td>
+</td></tr>
+<tr>
+<td style="text-align: left">Other
+</td>
+<td><a href="#NOP">NOP</a>
+</td>
+<td style="border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none; border-right: none;">
+</td>
+<td style="border-left: none;">
+</td></tr></tbody></table>
+<div class="mw-heading mw-heading2"><h2 id="Official_instructions">Official instructions</h2></div>
+<p><span id="ADC"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="ADC_-_Add_with_Carry">ADC - Add with Carry</h3></div>
+<p><code>A = A + memory + C</code>
+</p><p>ADC adds the carry flag and a memory value to the accumulator. The carry flag is then set to the carry value coming out of bit 7, allowing values larger than 1 byte to be added together by carrying the 1 into the next byte's addition. This can also be thought of as unsigned overflow. It is common to clear carry with <a href="#CLC">CLC</a> before adding the first byte to ensure it is in a known state, avoiding an off-by-one error. The overflow flag indicates whether signed overflow or underflow occurred. This happens if both inputs are positive and the result is negative, or both are negative and the result is positive.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>result &gt; $FF</td>
+<td>If the result overflowed past $FF (wrapping around), unsigned overflow occurred.
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#V" title="Status flags">V - Overflow</a></td>
+<td>(result ^ A) &amp; (result ^ memory) &amp; $80</td>
+<td>If the result's sign is different from both A's and memory's, signed overflow (or underflow) occurred.
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7</td>
+<td>
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$69</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$65</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$75</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$6D</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$7D</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$79</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_x_read" class="mw-redirect" title="Addressing modes">(Indirect,X)</a></td>
+<td>$61</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_y_read" class="mw-redirect" title="Addressing modes">(Indirect),Y</a></td>
+<td>$71</td>
+<td>2</td>
+<td>5 (6 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#SBC">SBC</a>, <a href="#CLC">CLC</a>
+</p>
+<hr />
+<p><span id="AND"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="AND_-_Bitwise_AND">AND - Bitwise AND</h3></div>
+<p><code>A = A &amp; memory</code>
+</p><p>This ANDs a memory value and the accumulator, bit by bit. If both input bits are 1, the resulting bit is 1. Otherwise, it is 0.
+</p>
+<table class="mw-collapsible mw-collapsed wikitable">
+<caption style="white-space:nowrap; border:1px solid; padding:3px; border-color:rgb(162, 169, 177); background-color:rgb(234, 236, 240);">AND truth table
+</caption>
+<tbody><tr>
+<th>A</th>
+<th>memory</th>
+<th>result
+</th></tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0
+</td></tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0
+</td></tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0
+</td></tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$29</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$25</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$35</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$2D</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$3D</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$39</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_x_read" class="mw-redirect" title="Addressing modes">(Indirect,X)</a></td>
+<td>$21</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_y_read" class="mw-redirect" title="Addressing modes">(Indirect),Y</a></td>
+<td>$31</td>
+<td>2</td>
+<td>5 (6 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#ORA">ORA</a>, <a href="#EOR">EOR</a>
+</p>
+<hr />
+<p><span id="ASL"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="ASL_-_Arithmetic_Shift_Left">ASL - Arithmetic Shift Left</h3></div>
+<p><code>value = value &lt;&lt; 1</code>, or visually: <code> C &lt;- [76543210] &lt;- 0</code>
+</p><p>ASL shifts all the bits of a memory value or the accumulator one position to the left, moving the value of each bit into the next bit. Bit 7 is shifted into the carry flag, and 0 is shifted into bit 0. This is equivalent to multiplying an unsigned value by 2, with carry indicating overflow.
+</p><p>This is a read-modify-write instruction, meaning that its addressing modes that operate on memory first write the original value back to memory before the modified value. This extra write can matter if targeting a hardware register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>value bit 7
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Accumulator" class="mw-redirect" title="Addressing modes">Accumulator</a></td>
+<td>$0A</td>
+<td>1</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_rmw" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$06</td>
+<td>2</td>
+<td>5
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_rmw" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$16</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_rmw" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$0E</td>
+<td>3</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_rmw" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$1E</td>
+<td>3</td>
+<td>7
+</td></tr></tbody></table>
+<p>See also: <a href="#LSR">LSR</a>, <a href="#ROL">ROL</a>, <a href="#ROR">ROR</a>
+</p>
+<hr />
+<p><span id="BCC"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BCC_-_Branch_if_Carry_Clear">BCC - Branch if Carry Clear</h3></div>
+<p><code>PC = PC + 2 + memory (signed)</code>
+</p><p>If the carry flag is clear, BCC branches to a nearby location by adding the relative offset to the program counter. The offset is signed and has a range of [-128, 127] relative to the first byte <i>after</i> the branch instruction. Branching further than that requires using a <a href="#JMP">JMP</a> instruction, instead, and branching over that <a href="#JMP">JMP</a> when carry is set with <a href="#BCS">BCS</a>.
+</p><p>The carry flag has different meanings depending on the context. BCC can be used after a compare to branch if the register is less than the memory value, so it is sometimes called BLT for Branch if Less Than. It can also be used after <a href="#SBC">SBC</a> to branch if the unsigned value underflowed or after <a href="#ADC">ADC</a> to branch if it did <i>not</i> overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Relative" class="mw-redirect" title="Addressing modes">Relative</a></td>
+<td>$90</td>
+<td>2</td>
+<td>2 (3 if branch taken, 4 if page crossed)<a href="#footnote">*</a>
+</td></tr></tbody></table>
+<p>See also: <a href="#BCS">BCS</a>, <a href="#JMP">JMP</a>
+</p>
+<hr />
+<p><span id="BCS"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BCS_-_Branch_if_Carry_Set">BCS - Branch if Carry Set</h3></div>
+<p><code>PC = PC + 2 + memory (signed)</code>
+</p><p>If the carry flag is set, BCS branches to a nearby location by adding the branch offset to the program counter. The offset is signed and has a range of [-128, 127] relative to the first byte <i>after</i> the branch instruction. Branching further than that requires using a <a href="#JMP">JMP</a> instruction, instead, and branching over that <a href="#JMP">JMP</a> when carry is clear with <a href="#BCC">BCC</a>.
+</p><p>The carry flag has different meanings depending on the context. BCS can be used after a compare to branch if the register is greater than or equal to the memory value, so it is sometimes called BGE for Branch if Greater Than or Equal. It can also be used after <a href="#ADC">ADC</a> to branch if the unsigned value overflowed or after <a href="#SBC">SBC</a> to branch if it did <i>not</i> underflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Relative" class="mw-redirect" title="Addressing modes">Relative</a></td>
+<td>$B0</td>
+<td>2</td>
+<td>2 (3 if branch taken, 4 if page crossed)<a href="#footnote">*</a>
+</td></tr></tbody></table>
+<p>See also: <a href="#BCC">BCC</a>, <a href="#JMP">JMP</a>
+</p>
+<hr />
+<p><span id="BEQ"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BEQ_-_Branch_if_Equal">BEQ - Branch if Equal</h3></div>
+<p><code>PC = PC + 2 + memory (signed)</code>
+</p><p>If the zero flag is set, BEQ branches to a nearby location by adding the branch offset to the program counter. The offset is signed and has a range of [-128, 127] relative to the first byte <i>after</i> the branch instruction. Branching further than that requires using a <a href="#JMP">JMP</a> instruction, instead, and branching over that <a href="#JMP">JMP</a> when zero is clear with <a href="#BNE">BNE</a>.
+</p><p>Comparison uses this flag to indicate if the compared values are equal. All instructions that change A, X, or Y also implicitly set or clear the zero flag depending on whether the register becomes 0.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Relative" class="mw-redirect" title="Addressing modes">Relative</a></td>
+<td>$F0</td>
+<td>2</td>
+<td>2 (3 if branch taken, 4 if page crossed)<a href="#footnote">*</a>
+</td></tr></tbody></table>
+<p>See also: <a href="#BNE">BNE</a>, <a href="#JMP">JMP</a>
+</p>
+<hr />
+<p><span id="BIT"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BIT_-_Bit_Test">BIT - Bit Test</h3></div>
+<p><code>A &amp; memory</code>
+</p><p>BIT modifies flags, but does not change memory or registers. The zero flag is set depending on the result of the accumulator AND memory value, effectively applying a bitmask and then checking if any bits are set. Bits 7 and 6 of the memory value are loaded directly into the negative and overflow flags, allowing them to be easily checked without having to load a mask into A.
+</p><p>Because BIT only changes CPU flags, it is sometimes used to trigger the read side effects of a hardware register without clobbering any CPU registers, or even to waste cycles as a 3-cycle <a href="#NOP">NOP</a>. As an advanced trick, it is occasionally used to hide a 1- or 2-byte instruction in its operand that is only executed if jumped to directly, allowing two code paths to be interleaved. However, because the instruction in the operand is treated as an address from which to read, this carries risk of triggering side effects if it reads a hardware register. This trick can be useful when working under tight constraints on space, time, or register usage.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#V" title="Status flags">V - Overflow</a></td>
+<td>memory bit 6
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>memory bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero page</a></td>
+<td>$24</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$2C</td>
+<td>3</td>
+<td>4
+</td></tr></tbody></table>
+<p>See also: <a href="#AND">AND</a>
+</p>
+<hr />
+<p><span id="BMI"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BMI_-_Branch_if_Minus">BMI - Branch if Minus</h3></div>
+<p><code>PC = PC + 2 + memory (signed)</code>
+</p><p>If the negative flag is set, BMI branches to a nearby location by adding the branch offset to the program counter. The offset is signed and has a range of [-128, 127] relative to the first byte <i>after</i> the branch instruction. Branching further than that requires using a <a href="#JMP">JMP</a> instruction, instead, and branching over that <a href="#JMP">JMP</a> when negative is clear with <a href="#BPL">BPL</a>.
+</p><p>All instructions that change A, X, or Y implicitly set or clear the negative flag based on bit 7 (the sign bit).
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Relative" class="mw-redirect" title="Addressing modes">Relative</a></td>
+<td>$30</td>
+<td>2</td>
+<td>2 (3 if branch taken, 4 if page crossed)<a href="#footnote">*</a>
+</td></tr></tbody></table>
+<p>See also: <a href="#BPL">BPL</a>, <a href="#JMP">JMP</a>
+</p>
+<hr />
+<p><span id="BNE"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BNE_-_Branch_if_Not_Equal">BNE - Branch if Not Equal</h3></div>
+<p><code>PC = PC + 2 + memory (signed)</code>
+</p><p>If the zero flag is clear, BNE branches to a nearby location by adding the branch offset to the program counter. The offset is signed and has a range of [-128, 127] relative to the first byte <i>after</i> the branch instruction. Branching further than that requires using a <a href="#JMP">JMP</a> instruction, instead, and branching over that <a href="#JMP">JMP</a> when negative is set with <a href="#BEQ">BEQ</a>.
+</p><p>Comparison uses this flag to indicate if the compared values are equal. All instructions that change A, X, or Y also implicitly set or clear the zero flag depending on whether the register becomes 0.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Relative" class="mw-redirect" title="Addressing modes">Relative</a></td>
+<td>$D0</td>
+<td>2</td>
+<td>2 (3 if branch taken, 4 if page crossed)<a href="#footnote">*</a>
+</td></tr></tbody></table>
+<p>See also: <a href="#BEQ">BEQ</a>, <a href="#JMP">JMP</a>
+</p>
+<hr />
+<p><span id="BPL"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BPL_-_Branch_if_Plus">BPL - Branch if Plus</h3></div>
+<p><code>PC = PC + 2 + memory (signed)</code>
+</p><p>If the negative flag is clear, BPL branches to a nearby location by adding the branch offset to the program counter. The offset is signed and has a range of [-128, 127] relative to the first byte <i>after</i> the branch instruction. Branching further than that requires using a <a href="#JMP">JMP</a> instruction, instead, and branching over that <a href="#JMP">JMP</a> when negative is set with <a href="#BMI">BMI</a>.
+</p><p>All instructions that change A, X, or Y implicitly set or clear the negative flag based on bit 7 (the sign bit).
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Relative" class="mw-redirect" title="Addressing modes">Relative</a></td>
+<td>$10</td>
+<td>2</td>
+<td>2 (3 if branch taken, 4 if page crossed)<a href="#footnote">*</a>
+</td></tr></tbody></table>
+<p>See also: <a href="#BMI">BMI</a>, <a href="#JMP">JMP</a>
+</p>
+<hr />
+<p><span id="BRK"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BRK_-_Break_(software_IRQ)"><span id="BRK_-_Break_.28software_IRQ.29"></span>BRK - Break (software IRQ)</h3></div>
+<p><code><a href="#PHA">push</a> PC + 2 high byte to stack</code><br />
+<code><a href="#PHA">push</a> PC + 2 low byte to stack</code><br />
+<code><a href="#PHA">push</a> NV11DIZC flags to stack</code><br />
+<code>PC = ($FFFE)</code>
+</p><p>BRK triggers an interrupt request (IRQ). IRQs are normally triggered by external hardware, and BRK is the only way to do it in software. Like a typical IRQ, it pushes the current program counter and processor flags to the stack, sets the interrupt disable flag, and jumps to the IRQ handler. Unlike a typical IRQ, it sets the break flag in the flags byte that is pushed to the stack (like <a href="#PHP">PHP</a>) and it triggers an interrupt even if the interrupt disable flag is set. Notably, the return address that is pushed to the stack skips the byte after the BRK opcode. For this reason, BRK is often considered a 2-byte instruction with an unused immediate.
+</p><p>Unfortunately, a 6502 bug allows the BRK IRQ to be overridden by an NMI occurring at the same time. In this case, only the NMI handler is called; the IRQ handler is skipped. However, the break flag is still set in the flags byte pushed to the stack, so the NMI handler can detect that this occurred (albeit slowly) by checking this flag.
+</p><p>Because BRK uses the value $00, any byte in a programmable ROM can be overwritten with a BRK instruction to send execution to an IRQ handler. This is useful for patching one-time programmable ROMs. BRK can also be used as a system call mechanism, and the unused byte can be used by software as an argument (although it is inconvenient to access). In the context of NES games, BRK is often most useful as a crash handler, where the unused program space is filled with $00 and the IRQ handler displays debugging information or otherwise handles the crash in a clean way.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#I" title="Status flags">I - Interrupt disable</a></td>
+<td>1</td>
+<td>This is set to 1 after the old flags are pushed to the stack. The effect of changing this flag is <i>not</i> delayed.
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#B" title="Status flags">B - Break</a></td>
+<td>Pushed as 1</td>
+<td>This flag exists only in the flags byte pushed to the stack, not as real state in the CPU.
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#BRK" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$00</td>
+<td>1</td>
+<td>7</td>
+<td>Although BRK only uses 1 byte, its return address skips the following byte.
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#BRK" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$00</td>
+<td>2</td>
+<td>7</td>
+<td>Because BRK skips the following byte, it is often considered a 2-byte instruction.
+</td></tr></tbody></table>
+<p>See also: <a href="#RTI">RTI</a>, <a href="#PHP">PHP</a>
+</p>
+<hr />
+<p><span id="BVC"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BVC_-_Branch_if_Overflow_Clear">BVC - Branch if Overflow Clear</h3></div>
+<p><code>PC = PC + 2 + memory (signed)</code>
+</p><p>If the overflow flag is clear, BVC branches to a nearby location by adding the branch offset to the program counter. The offset is signed and has a range of [-128, 127] relative to the first byte <i>after</i> the branch instruction. Branching further than that requires using a <a href="#JMP">JMP</a> instruction, instead, and branching over that <a href="#JMP">JMP</a> when overflow is set with <a href="#BVS">BVS</a>.
+</p><p>Unlike zero, negative, and even carry, overflow is modified by very few instructions. It is most often used with the <a href="#BIT">BIT</a> instruction, particularly for polling hardware registers. It is also sometimes used for signed overflow with <a href="#ADC">ADC</a> and <a href="#SBC">SBC</a>. The standard 6502 chip allows an external device to set overflow using a pin, enabling software to poll for that event, but this is not present on the NES' 2A03.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Relative" class="mw-redirect" title="Addressing modes">Relative</a></td>
+<td>$50</td>
+<td>2</td>
+<td>2 (3 if branch taken, 4 if page crossed)<a href="#footnote">*</a>
+</td></tr></tbody></table>
+<p>See also: <a href="#BVS">BVS</a>, <a href="#JMP">JMP</a>
+</p>
+<hr />
+<p><span id="BVS"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="BVS_-_Branch_if_Overflow_Set">BVS - Branch if Overflow Set</h3></div>
+<p><code>PC = PC + 2 + memory (signed)</code>
+</p><p>If the overflow flag is set, BVS branches to a nearby location by adding the branch offset to the program counter. The offset is signed and has a range of [-128, 127] relative to the first byte <i>after</i> the branch instruction. Branching further than that requires using a <a href="#JMP">JMP</a> instruction, instead, and branching over that <a href="#JMP">JMP</a> when overflow is clear with <a href="#BVC">BVC</a>.
+</p><p>Unlike zero, negative, and even carry, overflow is modified by very few instructions. It is most often used with the <a href="#BIT">BIT</a> instruction, particularly for polling hardware registers. It is also sometimes used for signed overflow with <a href="#ADC">ADC</a> and <a href="#SBC">SBC</a>. The standard 6502 chip allows an external device to set overflow using a pin, enabling software to poll for that event, but this is not present on the NES' 2A03 CPU.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Relative" class="mw-redirect" title="Addressing modes">Relative</a></td>
+<td>$70</td>
+<td>2</td>
+<td>2 (3 if branch taken, 4 if page crossed)<a href="#footnote">*</a>
+</td></tr></tbody></table>
+<p>See also: <a href="#BVC">BVC</a>, <a href="#JMP">JMP</a>
+</p>
+<hr />
+<p><span id="CLC"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="CLC_-_Clear_Carry">CLC - Clear Carry</h3></div>
+<p><code>C = 0</code>
+</p><p>CLC clears the carry flag. In particular, this is usually done before adding the low byte of a value with <a href="#ADC">ADC</a> to avoid adding an extra 1.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>0
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$18</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#SEC">SEC</a>
+</p>
+<hr />
+<p><span id="CLD"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="CLD_-_Clear_Decimal">CLD - Clear Decimal</h3></div>
+<p><code>D = 0</code>
+</p><p>CLD clears the decimal flag. The decimal flag normally controls whether binary-coded decimal mode (BCD) is enabled, but this mode is permanently disabled on the NES' 2A03 CPU. However, the flag itself still functions and can be used to store state.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#D" title="Status flags">D - Decimal</a></td>
+<td>0
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$D8</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#SED">SED</a>
+</p>
+<hr />
+<p><span id="CLI"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="CLI_-_Clear_Interrupt_Disable">CLI - Clear Interrupt Disable</h3></div>
+<p><code>I = 0</code>
+</p><p>CLI clears the interrupt disable flag, enabling the CPU to handle hardware IRQs. The effect of changing this flag is delayed one instruction because the flag is changed after IRQ is polled, allowing the next instruction to execute before any pending IRQ is detected and serviced. This flag has no effect on NMI, which (as the "non-maskable" name suggests) cannot be ignored by the CPU.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#I" title="Status flags">I - Interrupt disable</a></td>
+<td>0</td>
+<td>The effect of changing this flag is delayed 1 instruction.
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$58</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#SEI">SEI</a>
+</p>
+<hr />
+<p><span id="CLV"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="CLV_-_Clear_Overflow">CLV - Clear Overflow</h3></div>
+<p><code>V = 0</code>
+</p><p>CLV clears the overflow flag. There is no corresponding SEV instruction; instead, setting overflow is exposed on the 6502 CPU as a pin controlled by external hardware, and not exposed at all on the NES' 2A03 CPU.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#V" title="Status flags">V - Overflow</a></td>
+<td>0
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$B8</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<hr />
+<p><span id="CMP"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="CMP_-_Compare_A">CMP - Compare A</h3></div>
+<p><code>A - memory</code>
+</p><p>CMP compares A to a memory value, setting flags as appropriate but not modifying any registers. The comparison is implemented as a subtraction, setting carry if there is no borrow, zero if the result is 0, and negative if the result is negative. However, carry and zero are often most easily remembered as inequalities.
+</p><p>Note that comparison does <i>not</i> affect overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>A &gt;= memory
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>A == memory
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$C9</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$C5</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$D5</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$CD</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$DD</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$D9</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_x_read" class="mw-redirect" title="Addressing modes">(Indirect,X)</a></td>
+<td>$C1</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_y_read" class="mw-redirect" title="Addressing modes">(Indirect),Y</a></td>
+<td>$D1</td>
+<td>2</td>
+<td>5 (6 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#CPX">CPX</a>, <a href="#CPY">CPY</a>
+</p>
+<hr />
+<p><span id="CPX"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="CPX_-_Compare_X">CPX - Compare X</h3></div>
+<p><code>X - memory</code>
+</p><p>CPX compares X to a memory value, setting flags as appropriate but not modifying any registers. The comparison is implemented as a subtraction, setting carry if there is no borrow, zero if the result is 0, and negative if the result is negative. However, carry and zero are often most easily remembered as inequalities.
+</p><p>Note that comparison does <i>not</i> affect overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>X &gt;= memory
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>X == memory
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$E0</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$E4</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$EC</td>
+<td>3</td>
+<td>4
+</td></tr></tbody></table>
+<p>See also: <a href="#CMP">CMP</a>, <a href="#CPY">CPY</a>
+</p>
+<hr />
+<p><span id="CPY"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="CPY_-_Compare_Y">CPY - Compare Y</h3></div>
+<p><code>Y - memory</code>
+</p><p>CPY compares Y to a memory value, setting flags as appropriate but not modifying any registers. The comparison is implemented as a subtraction, setting carry if there is no borrow, zero if the result is 0, and negative if the result is negative. However, carry and zero are often most easily remembered as inequalities.
+</p><p>Note that comparison does <i>not</i> affect overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>Y &gt;= memory
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>Y == memory
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$C0</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$C4</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$CC</td>
+<td>3</td>
+<td>4
+</td></tr></tbody></table>
+<p>See also: <a href="#CMP">CMP</a>, <a href="#CPX">CPX</a>
+</p>
+<hr />
+<p><span id="DEC"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="DEC_-_Decrement_Memory">DEC - Decrement Memory</h3></div>
+<p><code>memory = memory - 1</code>
+</p><p>DEC subtracts 1 from a memory location. Notably, there is no version of this instruction for the accumulator; <a href="#ADC">ADC</a> or <a href="#SBC">SBC</a> must be used, instead.
+</p><p>This is a read-modify-write instruction, meaning that it first writes the original value back to memory before the modified value. This extra write can matter if targeting a hardware register.
+</p><p>Note that decrement does <i>not</i> affect carry nor overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_rmw" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$C6</td>
+<td>2</td>
+<td>5
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_rmw" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$D6</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_rmw" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$CE</td>
+<td>3</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_rmw" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$DE</td>
+<td>3</td>
+<td>7
+</td></tr></tbody></table>
+<p>See also: <a href="#INC">INC</a>, <a href="#ADC">ADC</a>, <a href="#SBC">SBC</a>
+</p>
+<hr />
+<p><span id="DEX"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="DEX_-_Decrement_X">DEX - Decrement X</h3></div>
+<p><code>X = X - 1</code>
+</p><p>DEX subtracts 1 from the X register. Note that it does <i>not</i> affect carry nor overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$CA</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#INX">INX</a>
+</p>
+<hr />
+<p><span id="DEY"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="DEY_-_Decrement_Y">DEY - Decrement Y</h3></div>
+<p><code>Y = Y - 1</code>
+</p><p>DEY subtracts 1 from the Y register. Note that it does <i>not</i> affect carry nor overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$88</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#INY">INY</a>
+</p>
+<hr />
+<p><span id="EOR"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="EOR_-_Bitwise_Exclusive_OR">EOR - Bitwise Exclusive OR</h3></div>
+<p><code>A = A ^ memory</code>
+</p><p>EOR exclusive-ORs a memory value and the accumulator, bit by bit. If the input bits are different, the resulting bit is 1. If they are the same, it is 0. This operation is also known as XOR.
+</p><p>6502 doesn't have a bitwise NOT instruction, but using EOR with value $FF has the same behavior, inverting every bit of the other value. In fact, EOR can be thought of as NOT with a bitmask; all the 1 bits in one value have the effect of inverting the corresponding bit in the other value, while 0 bits do nothing.
+</p>
+<table class="mw-collapsible mw-collapsed wikitable">
+<caption style="white-space:nowrap; border:1px solid; padding:3px; border-color:rgb(162, 169, 177); background-color:rgb(234, 236, 240);">EOR truth table
+</caption>
+<tbody><tr>
+<th>A</th>
+<th>memory</th>
+<th>result
+</th></tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0
+</td></tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1
+</td></tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1
+</td></tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$49</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$45</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$55</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$4D</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$5D</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$59</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_x_read" class="mw-redirect" title="Addressing modes">(Indirect,X)</a></td>
+<td>$41</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_y_read" class="mw-redirect" title="Addressing modes">(Indirect),Y</a></td>
+<td>$51</td>
+<td>2</td>
+<td>5 (6 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#AND">AND</a>, <a href="#ORA">ORA</a>
+</p>
+<hr />
+<p><span id="INC"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="INC_-_Increment_Memory">INC - Increment Memory</h3></div>
+<p><code>memory = memory + 1</code>
+</p><p>INC adds 1 to a memory location. Notably, there is no version of this instruction for the accumulator; <a href="#ADC">ADC</a> or <a href="#SBC">SBC</a> must be used, instead.
+</p><p>This is a read-modify-write instruction, meaning that it first writes the original value back to memory before the modified value. This extra write can matter if targeting a hardware register.
+</p><p>Note that increment does <i>not</i> affect carry nor overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_rmw" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$E6</td>
+<td>2</td>
+<td>5
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_rmw" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$F6</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_rmw" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$EE</td>
+<td>3</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_rmw" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$FE</td>
+<td>3</td>
+<td>7
+</td></tr></tbody></table>
+<p>See also: <a href="#DEC">DEC</a>, <a href="#ADC">ADC</a>, <a href="#SBC">SBC</a>
+</p>
+<hr />
+<p><span id="INX"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="INX_-_Increment_X">INX - Increment X</h3></div>
+<p><code>X = X + 1</code>
+</p><p>INX adds 1 to the X register. Note that it does <i>not</i> affect carry nor overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$E8</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#DEX">DEX</a>
+</p>
+<hr />
+<p><span id="INY"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="INY_-_Increment_Y">INY - Increment Y</h3></div>
+<p><code>Y = Y + 1</code>
+</p><p>INY adds 1 to the Y register. Note that it does <i>not</i> affect carry nor overflow.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$C8</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#DEY">DEY</a>
+</p>
+<hr />
+<p><span id="JMP"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="JMP_-_Jump">JMP - Jump</h3></div>
+<p><code>PC = memory</code>
+</p><p>JMP sets the program counter to a new value, allowing code to execute from a new location. If you wish to be able to return from that location, <a href="#JSR">JSR</a> should normally be used, instead.
+</p><p>The indirect addressing mode uses the operand as a pointer, getting the new 2-byte program counter value from the specified address. Unfortunately, because of a CPU bug, if this 2-byte variable has an address ending in $FF and thus crosses a page, then the CPU fails to increment the page when reading the second byte and thus reads the wrong address. For example, JMP ($03FF) reads $03FF and <i>$0300</i> instead of $0400. Care should be taken to ensure this variable does not cross a page.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$4C</td>
+<td>3</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect" class="mw-redirect" title="Addressing modes">(Indirect)</a></td>
+<td>$6C</td>
+<td>3</td>
+<td>5
+</td></tr></tbody></table>
+<p>See also: <a href="#JSR">JSR</a>
+</p>
+<hr />
+<p><span id="JSR"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="JSR_-_Jump_to_Subroutine">JSR - Jump to Subroutine</h3></div>
+<p><code><a href="#PHA">push</a> PC + 2 high byte to stack</code><br />
+<code><a href="#PHA">push</a> PC + 2 low byte to stack</code><br />
+<code>PC = memory</code>
+</p><p>JSR pushes the current program counter to the stack and then sets the program counter to a new value. This allows code to call a function and return with <a href="#RTS">RTS</a> back to the instruction after the JSR.
+</p><p>Notably, the return address on the stack points 1 byte before the start of the next instruction, rather than directly at the instruction. This is because <a href="#RTS">RTS</a> increments the program counter before the next instruction is fetched. This differs from the return address pushed by interrupts and used by <a href="#RTI">RTI</a>, which points directly at the next instruction.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$20</td>
+<td>3</td>
+<td>6
+</td></tr></tbody></table>
+<p>See also: <a href="#RTS">RTS</a>, <a href="#JMP">JMP</a>, <a href="#RTI">RTI</a>
+</p>
+<hr />
+<p><span id="LDA"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="LDA_-_Load_A">LDA - Load A</h3></div>
+<p><code>A = memory</code>
+</p><p>LDA loads a memory value into the accumulator.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$A9</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$A5</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$B5</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$AD</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$BD</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$B9</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_x_read" class="mw-redirect" title="Addressing modes">(Indirect,X)</a></td>
+<td>$A1</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_y_read" class="mw-redirect" title="Addressing modes">(Indirect),Y</a></td>
+<td>$B1</td>
+<td>2</td>
+<td>5 (6 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#STA">STA</a>
+</p>
+<hr />
+<p><span id="LDX"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="LDX_-_Load_X">LDX - Load X</h3></div>
+<p><code>X = memory</code>
+</p><p>LDX loads a memory value into the X register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$A2</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$A6</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,Y</a></td>
+<td>$B6</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$AE</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$BE</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#STX">STX</a>
+</p>
+<hr />
+<p><span id="LDY"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="LDY_-_Load_Y">LDY - Load Y</h3></div>
+<p><code>Y = memory</code>
+</p><p>LDY loads a memory value into the Y register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$A0</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$A4</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$B4</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$AC</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$BC</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#STY">STY</a>
+</p>
+<hr />
+<p><span id="LSR"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="LSR_-_Logical_Shift_Right">LSR - Logical Shift Right</h3></div>
+<p><code>value = value &gt;&gt; 1</code>, or visually: <code> 0 -&gt; [76543210] -&gt; C</code>
+</p><p>LSR shifts all the bits of a memory value or the accumulator one position to the right, moving the value of each bit into the next bit. 0 is shifted into bit 7, and bit 0 is shifted into the carry flag. This is equivalent to dividing an unsigned value by 2 and rounding down, with the remainder in carry.
+</p><p>This is a read-modify-write instruction, meaning that its addressing modes that operate on memory first write the original value back to memory before the modified value. This extra write can matter if targeting a hardware register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>value bit 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>0
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Accumulator" class="mw-redirect" title="Addressing modes">Accumulator</a></td>
+<td>$4A</td>
+<td>1</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_rmw" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$46</td>
+<td>2</td>
+<td>5
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_rmw" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$56</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_rmw" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$4E</td>
+<td>3</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_rmw" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$5E</td>
+<td>3</td>
+<td>7
+</td></tr></tbody></table>
+<p>See also: <a href="#ASL">ASL</a>, <a href="#ROL">ROL</a>, <a href="#ROR">ROR</a>
+</p>
+<hr />
+<p><span id="NOP"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="NOP_-_No_Operation">NOP - No Operation</h3></div>
+<p>NOP has no effect; it merely wastes space and CPU cycles. This instruction can be useful when writing timed code to delay for a desired amount of time, as padding to ensure something does or does not cross a page, or to disable code in a binary.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$EA</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<hr />
+<p><span id="ORA"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="ORA_-_Bitwise_OR">ORA - Bitwise OR</h3></div>
+<p><code>A = A | memory</code>
+</p><p>ORA inclusive-ORs a memory value and the accumulator, bit by bit. If either input bit is 1, the resulting bit is 1. Otherwise, it is 0.
+</p>
+<table class="mw-collapsible mw-collapsed wikitable">
+<caption style="white-space:nowrap; border:1px solid; padding:3px; border-color:rgb(162, 169, 177); background-color:rgb(234, 236, 240);">OR truth table
+</caption>
+<tbody><tr>
+<th>A</th>
+<th>memory</th>
+<th>result
+</th></tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0
+</td></tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1
+</td></tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1
+</td></tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$09</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$05</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$15</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$0D</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$1D</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$19</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_x_read" class="mw-redirect" title="Addressing modes">(Indirect,X)</a></td>
+<td>$01</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_y_read" class="mw-redirect" title="Addressing modes">(Indirect),Y</a></td>
+<td>$11</td>
+<td>2</td>
+<td>5 (6 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#AND">AND</a>, <a href="#EOR">EOR</a>
+</p>
+<hr />
+<p><span id="PHA"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="PHA_-_Push_A">PHA - Push A</h3></div>
+<p><code>($0100 + SP) = A</code><br />
+<code>SP = SP - 1</code>
+</p><p>PHA stores the value of A to the current stack position and then decrements the stack pointer.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$48</td>
+<td>1</td>
+<td>3
+</td></tr></tbody></table>
+<p>See also: <a href="#PLA">PLA</a>
+</p>
+<hr />
+<p><span id="PHP"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="PHP_-_Push_Processor_Status">PHP - Push Processor Status</h3></div>
+<p><code>($0100 + SP) = NV11DIZC</code><br />
+<code>SP = SP - 1</code>
+</p><p>PHP stores a byte to the stack containing the 6 status flags and B flag and then decrements the stack pointer. The B flag and extra bit are both pushed as 1. The bit order is NV1BDIZC (high to low).
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#B" title="Status flags">B - Break</a></td>
+<td>Pushed as 1</td>
+<td>This flag exists only in the flags byte pushed to the stack, not as real state in the CPU.
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$08</td>
+<td>1</td>
+<td>3
+</td></tr></tbody></table>
+<p>See also: <a href="#PLP">PLP</a>
+</p>
+<hr />
+<p><span id="PLA"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="PLA_-_Pull_A">PLA - Pull A</h3></div>
+<p><code>SP = SP + 1</code><br />
+<code>A = ($0100 + SP)</code>
+</p><p>PLA increments the stack pointer and then loads the value at that stack position into A.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$68</td>
+<td>1</td>
+<td>4
+</td></tr></tbody></table>
+<p>See also: <a href="#PHA">PHA</a>
+</p>
+<hr />
+<p><span id="PLP"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="PLP_-_Pull_Processor_Status">PLP - Pull Processor Status</h3></div>
+<p><code>SP = SP + 1</code><br />
+<code>NVxxDIZC = ($0100 + SP)</code>
+</p><p>PLP increments the stack pointer and then loads the value at that stack position into the 6 status flags. The bit order is NVxxDIZC (high to low). The B flag and extra bit are ignored. Note that the effect of changing I is delayed one instruction because the flag is changed after IRQ is polled, delaying the effect until IRQ is polled in the next instruction like with <a href="#CLI">CLI</a> and <a href="#SEI">SEI</a>.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>result bit 0</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result bit 1</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#I" title="Status flags">I - Interrupt disable</a></td>
+<td>result bit 2</td>
+<td>The effect of changing this flag is delayed 1 instruction.
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#D" title="Status flags">D - Decimal</a></td>
+<td>result bit 3</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#V" title="Status flags">V - Overflow</a></td>
+<td>result bit 6</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7</td>
+<td>
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$28</td>
+<td>1</td>
+<td>4
+</td></tr></tbody></table>
+<p>See also: <a href="#PHP">PHP</a>
+</p>
+<hr />
+<p><span id="ROL"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="ROL_-_Rotate_Left">ROL - Rotate Left</h3></div>
+<p><code>value = value &lt;&lt; 1 through C</code>, or visually: <code> C &lt;- [76543210] &lt;- C</code>
+</p><p>ROL shifts a memory value or the accumulator to the left, moving the value of each bit into the next bit and treating the carry flag as though it is both above bit 7 and below bit 0. Specifically, the value in carry is shifted into bit 0, and bit 7 is shifted into carry. Rotating left 9 times simply returns the value and carry back to their original state.
+</p><p>This is a read-modify-write instruction, meaning that its addressing modes that operate on memory first write the original value back to memory before the modified value. This extra write can matter if targeting a hardware register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>value bit 7
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Accumulator" class="mw-redirect" title="Addressing modes">Accumulator</a></td>
+<td>$2A</td>
+<td>1</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_rmw" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$26</td>
+<td>2</td>
+<td>5
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_rmw" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$36</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_rmw" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$2E</td>
+<td>3</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_rmw" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$3E</td>
+<td>3</td>
+<td>7
+</td></tr></tbody></table>
+<p>See also: <a href="#ROR">ROR</a>, <a href="#ASL">ASL</a>, <a href="#LSR">LSR</a>
+</p>
+<hr />
+<p><span id="ROR"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="ROR_-_Rotate_Right">ROR - Rotate Right</h3></div>
+<p><code>value = value &gt;&gt; 1 through C</code>, or visually: <code> C -&gt; [76543210] -&gt; C</code>
+</p><p>ROR shifts a memory value or the accumulator to the right, moving the value of each bit into the next bit and treating the carry flag as though it is both above bit 7 and below bit 0. Specifically, the value in carry is shifted into bit 7, and bit 0 is shifted into carry. Rotating right 9 times simply returns the value and carry back to their original state.
+</p><p>This is a read-modify-write instruction, meaning that its addressing modes that operate on memory first write the original value back to memory before the modified value. This extra write can matter if targeting a hardware register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>value bit 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Accumulator" class="mw-redirect" title="Addressing modes">Accumulator</a></td>
+<td>$6A</td>
+<td>1</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_rmw" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$66</td>
+<td>2</td>
+<td>5
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_rmw" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$76</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_rmw" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$6E</td>
+<td>3</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_rmw" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$7E</td>
+<td>3</td>
+<td>7
+</td></tr></tbody></table>
+<p>See also: <a href="#ROL">ROL</a>, <a href="#ASL">ASL</a>, <a href="#LSR">LSR</a>
+</p>
+<hr />
+<p><span id="RTI"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="RTI_-_Return_from_Interrupt">RTI - Return from Interrupt</h3></div>
+<p><code><a href="#PLA">pull</a> NVxxDIZC flags from stack</code><br />
+<code><a href="#PLA">pull</a> PC low byte from stack</code><br />
+<code><a href="#PLA">pull</a> PC high byte from stack</code>
+</p><p>RTI returns from an interrupt handler, first pulling the 6 status flags from the stack and then pulling the new program counter. The flag pulling behaves like <a href="#PLP">PLP</a> except that changes to the interrupt disable flag apply immediately instead of being delayed 1 instruction. This is because the flags change before IRQs are polled for the instruction, not after. The PC pulling behaves like <a href="#RTS">RTS</a> except that the return address is the exact address of the next instruction instead of 1 byte before it.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>pulled flags bit 0</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>pulled flags bit 1</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#I" title="Status flags">I - Interrupt disable</a></td>
+<td>pulled flags bit 2</td>
+<td>The effect of changing this flag is <i>not</i> delayed.
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#D" title="Status flags">D - Decimal</a></td>
+<td>pulled flags bit 3</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#V" title="Status flags">V - Overflow</a></td>
+<td>pulled flags bit 6</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>pulled flags bit 7</td>
+<td>
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$40</td>
+<td>1</td>
+<td>6
+</td></tr></tbody></table>
+<p>See also: <a href="#BRK">BRK</a>, <a href="#PLP">PLP</a>, <a href="#RTS">RTS</a>
+</p>
+<hr />
+<p><span id="RTS"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="RTS_-_Return_from_Subroutine">RTS - Return from Subroutine</h3></div>
+<p><code><a href="#PLA">pull</a> PC low byte from stack</code><br />
+<code><a href="#PLA">pull</a> PC high byte from stack</code><br />
+<code>PC = PC + 1</code>
+</p><p>RTS pulls an address from the stack into the program counter and then increments the program counter. It is normally used at the end of a function to return to the instruction after the <a href="#JSR">JSR</a> that called the function. However, RTS is also sometimes used to implement jump tables (see <a href="/wiki/Jump_table" title="Jump table">Jump table</a> and <a href="/wiki/RTS_Trick" title="RTS Trick">RTS Trick</a>).
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$60</td>
+<td>1</td>
+<td>6
+</td></tr></tbody></table>
+<p>See also: <a href="#JSR">JSR</a>, <a href="#PLA">PLA</a>
+</p>
+<hr />
+<p><span id="SBC"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="SBC_-_Subtract_with_Carry">SBC - Subtract with Carry</h3></div>
+<p><code>A = A - memory - ~C</code>, or equivalently: <code>A = A + ~memory + C</code>
+</p><p>SBC subtracts a memory value and the NOT of the carry flag from the accumulator. It does this by <i>adding</i> the bitwise NOT of the memory value using <a href="#ADC">ADC</a>. This implementation detail explains the backward nature of carry; SBC subtracts 1 more when carry is <i>clear</i>, not when it's set, and carry is cleared when it underflows and set otherwise. As with <a href="#ADC">ADC</a>, carry allows the borrow from one subtraction to be carried into the next subtraction, allowing subtraction of values larger than 1 byte. It is common to set carry with <a href="#SEC">SEC</a> before subtracting the first byte to ensure it is in a known state, avoiding an off-by-one error.
+</p><p>Overflow works the same as with <a href="#ADC">ADC</a>, except with an inverted memory value. Therefore, overflow or underflow occur if the result's sign is different from A's and the same as the memory value's.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>~(result &lt; $00)</td>
+<td>If the result underflowed below $00 (wrapping around), unsigned underflow occurred.
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0</td>
+<td>
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#V" title="Status flags">V - Overflow</a></td>
+<td>(result ^ A) &amp; (result ^ ~memory) &amp; $80</td>
+<td>If result's sign is different from A's and the same as memory's, signed overflow (or underflow) occurred.
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7</td>
+<td>
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Immediate" class="mw-redirect" title="Addressing modes">#Immediate</a></td>
+<td>$E9</td>
+<td>2</td>
+<td>2
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_read" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$E5</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_read" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$F5</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_read" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$ED</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$FD</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_read" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$F9</td>
+<td>3</td>
+<td>4 (5 if page crossed)
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_x_read" class="mw-redirect" title="Addressing modes">(Indirect,X)</a></td>
+<td>$E1</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_y_read" class="mw-redirect" title="Addressing modes">(Indirect),Y</a></td>
+<td>$F1</td>
+<td>2</td>
+<td>5 (6 if page crossed)
+</td></tr></tbody></table>
+<p>See also: <a href="#ADC">ADC</a>, <a href="#SEC">SEC</a>
+</p>
+<hr />
+<p><span id="SEC"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="SEC_-_Set_Carry">SEC - Set Carry</h3></div>
+<p><code>C = 1</code>
+</p><p>SEC sets the carry flag. In particular, this is usually done before subtracting the low byte of a value with <a href="#SBC">SBC</a> to avoid subtracting an extra 1.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#C" title="Status flags">C - Carry</a></td>
+<td>1
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$38</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#CLC">CLC</a>
+</p>
+<hr />
+<p><span id="SED"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="SED_-_Set_Decimal">SED - Set Decimal</h3></div>
+<p><code>D = 1</code>
+</p><p>SED sets the decimal flag. The decimal flag normally controls whether binary-coded decimal mode (BCD) is enabled, but this mode is permanently disabled on the NES' 2A03 CPU. However, the flag itself still functions and can be used to store state.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#D" title="Status flags">D - Decimal</a></td>
+<td>1
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$F8</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#CLD">CLD</a>
+</p>
+<hr />
+<p><span id="SEI"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="SEI_-_Set_Interrupt_Disable">SEI - Set Interrupt Disable</h3></div>
+<p><code>I = 1</code>
+</p><p>SEI sets the interrupt disable flag, preventing the CPU from handling hardware IRQs. The effect of changing this flag is delayed one instruction because the flag is changed after IRQ is polled, allowing an IRQ to be serviced between this and the next instruction if the flag was previously 0.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value</th>
+<th>Notes
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#I" title="Status flags">I - Interrupt disable</a></td>
+<td>1</td>
+<td>The effect of changing this flag is delayed 1 instruction.
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$78</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#CLI">CLI</a>
+</p>
+<hr />
+<p><span id="STA"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="STA_-_Store_A">STA - Store A</h3></div>
+<p><code>memory = A</code>
+</p><p>STA stores the accumulator value into memory.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_write" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$85</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_write" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$95</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_write" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$8D</td>
+<td>3</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_write" class="mw-redirect" title="Addressing modes">Absolute,X</a></td>
+<td>$9D</td>
+<td>3</td>
+<td>5
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_indexed_write" class="mw-redirect" title="Addressing modes">Absolute,Y</a></td>
+<td>$99</td>
+<td>3</td>
+<td>5
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_x_write" class="mw-redirect" title="Addressing modes">(Indirect,X)</a></td>
+<td>$81</td>
+<td>2</td>
+<td>6
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Indirect_y_write" class="mw-redirect" title="Addressing modes">(Indirect),Y</a></td>
+<td>$91</td>
+<td>2</td>
+<td>6
+</td></tr></tbody></table>
+<p>See also: <a href="#LDA">LDA</a>
+</p>
+<hr />
+<p><span id="STX"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="STX_-_Store_X">STX - Store X</h3></div>
+<p><code>memory = X</code>
+</p><p>STX stores the X register value into memory.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_write" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$86</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_write" class="mw-redirect" title="Addressing modes">Zero Page,Y</a></td>
+<td>$96</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_write" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$8E</td>
+<td>3</td>
+<td>4
+</td></tr></tbody></table>
+<p>See also: <a href="#LDX">LDX</a>
+</p>
+<hr />
+<p><span id="STY"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="STY_-_Store_Y">STY - Store Y</h3></div>
+<p><code>memory = Y</code>
+</p><p>STY stores the Y register value into memory.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_write" class="mw-redirect" title="Addressing modes">Zero Page</a></td>
+<td>$84</td>
+<td>2</td>
+<td>3
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Zero_page_indexed_write" class="mw-redirect" title="Addressing modes">Zero Page,X</a></td>
+<td>$94</td>
+<td>2</td>
+<td>4
+</td></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Absolute_write" class="mw-redirect" title="Addressing modes">Absolute</a></td>
+<td>$8C</td>
+<td>3</td>
+<td>4
+</td></tr></tbody></table>
+<p>See also: <a href="#LDY">LDY</a>
+</p>
+<hr />
+<p><span id="TAX"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="TAX_-_Transfer_A_to_X">TAX - Transfer A to X</h3></div>
+<p><code>X = A</code>
+</p><p>TAX copies the accumulator value to the X register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$AA</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#TXA">TXA</a>, <a href="#TAY">TAY</a>, <a href="#TYA">TYA</a>
+</p>
+<hr />
+<p><span id="TAY"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="TAY_-_Transfer_A_to_Y">TAY - Transfer A to Y</h3></div>
+<p><code>Y = A</code>
+</p><p>TAY copies the accumulator value to the Y register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$A8</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#TYA">TYA</a>, <a href="#TAX">TAX</a>, <a href="#TXA">TXA</a>
+</p>
+<hr />
+<p><span id="TSX"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="TSX_-_Transfer_Stack_Pointer_to_X">TSX - Transfer Stack Pointer to X</h3></div>
+<p><code>X = SP</code>
+</p><p>TSX copies the stack pointer value to the X register.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$BA</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#TXS">TXS</a>
+</p>
+<hr />
+<p><span id="TXA"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="TXA_-_Transfer_X_to_A">TXA - Transfer X to A</h3></div>
+<p><code>A = X</code>
+</p><p>TXA copies the X register value to the accumulator.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$8A</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#TAX">TAX</a>, <a href="#TAY">TAY</a>, <a href="#TYA">TYA</a>
+</p>
+<hr />
+<p><span id="TXS"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="TXS_-_Transfer_X_to_Stack_Pointer">TXS - Transfer X to Stack Pointer</h3></div>
+<p><code>SP = X</code>
+</p><p>TXS copies the X register value to the stack pointer.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$9A</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#TSX">TSX</a>
+</p>
+<hr />
+<p><span id="TYA"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="TYA_-_Transfer_Y_to_A">TYA - Transfer Y to A</h3></div>
+<p><code>A = Y</code>
+</p><p>TYA copies the Y register value to the accumulator.
+</p>
+<table class="wikitable">
+<tbody><tr>
+<th>Flag</th>
+<th>New value
+</th></tr>
+<tr>
+<td><a href="/wiki/Status_flags#Z" title="Status flags">Z - Zero</a></td>
+<td>result == 0
+</td></tr>
+<tr>
+<td><a href="/wiki/Status_flags#N" title="Status flags">N - Negative</a></td>
+<td>result bit 7
+</td></tr></tbody></table>
+<table class="wikitable">
+<tbody><tr>
+<th>Addressing mode</th>
+<th>Opcode</th>
+<th>Bytes</th>
+<th>Cycles
+</th></tr>
+<tr>
+<td><a href="/wiki/Addressing_modes#Implied" class="mw-redirect" title="Addressing modes">Implied</a></td>
+<td>$98</td>
+<td>1</td>
+<td>2
+</td></tr></tbody></table>
+<p>See also: <a href="#TAY">TAY</a>, <a href="#TAX">TAX</a>, <a href="#TXA">TXA</a>
+</p>
+<hr />
+<p><span id="footnote"></span>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Note">Note</h3></div>
+<p>For Relative addressing, the document <a rel="nofollow" class="external free" href="https://www.nesdev.org/6502_cpu.txt">https://www.nesdev.org/6502_cpu.txt</a> seems to represent branch instructions as having 5 possible cycles, however 2-4 cycles as noted on this page is correct.
+</p>
+<pre>       1     PC      R  fetch opcode, increment PC
+       2     PC      R  fetch operand, increment PC
+       3     PC      R  Fetch opcode of next instruction,
+                        If branch is taken, add operand to PCL.
+                        Otherwise increment PC.
+       4+    PC*     R  Fetch opcode of next instruction.
+                        Fix PCH. If it did not change, increment PC.
+       5!    PC      R  Fetch opcode of next instruction,
+                        increment PC.
+</pre>
+<p>These notes help clarify the way the cycles are represented in the document:
+</p>
+<ul><li>If the branch is not taken, cycle 3 shown here is actually cycle 1 of the next instruction (the branch instruction ending after 2 cycles).</li>
+<li>If the branch is taken and does not cross a page boundary, cycle 4 shown here is cycle 1 of the next instruction (the branch instruction ending after 3 cycles).</li>
+<li>If a page boundary is crossed, cycle 5 shown here is cycle 1 of the next instruction (the branch instruction ending after 4 cycles).</li></ul>
+<!-- 
+NewPP limit report
+Cached time: 20260511231155
+Cache expiry: 86400
+Reduced expiry: false
+Complications: [no‐toc]
+CPU time usage: 0.244 seconds
+Real time usage: 0.256 seconds
+Preprocessor visited node count: 1457/1000000
+Revision size: 57328/2097152 bytes
+Post‐expand include size: 2694/2097152 bytes
+Template argument size: 352/2097152 bytes
+Highest expansion depth: 5/100
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 0/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%   30.124      1 -total
+ 78.37%   23.609     57 Template:Anchor
+-->
+
+<!-- Saved in parser cache with key nesdev_db-wiki_:pcache:2673:|#|:idhash:canonical and timestamp 20260511231155 and revision id 23486. Rendering was triggered because: page_view
+ -->
+</div>
+<div class="printfooter" data-nosnippet="">Retrieved from "<a dir="ltr" href="https://www.nesdev.org/w/index.php?title=Instruction_reference&amp;oldid=23486">https://www.nesdev.org/w/index.php?title=Instruction_reference&amp;oldid=23486</a>"</div></div>
+				<div id="catlinks" class="catlinks catlinks-allhidden" data-mw="interface"></div>
+				<!-- end content -->
+				<div class="visualClear"></div>
+			</div>
+		</div>
+		<div class="visualClear"></div>
+	</div>
+	<div id="column-one" >
+		<h2>Navigation menu</h2>
+		<div role="navigation" class="portlet" id="p-cactions" aria-labelledby="p-cactions-label">
+			<h3 id="p-cactions-label" >Page actions</h3>
+			<div class="pBody">
+				<ul >
+				<li id="ca-nstab-main" class="selected mw-list-item"><a href="/wiki/Instruction_reference" title="View the content page [c]" accesskey="c">Page</a></li><li id="ca-talk" class="new mw-list-item"><a href="/w/index.php?title=Talk:Instruction_reference&amp;action=edit&amp;redlink=1" rel="discussion" class="new" title="Discussion about the content page (page does not exist) [t]" accesskey="t">Discussion</a></li><li id="ca-view" class="selected mw-list-item"><a href="/wiki/Instruction_reference">Read</a></li><li id="ca-viewsource" class="mw-list-item"><a href="/w/index.php?title=Instruction_reference&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></li><li id="ca-history" class="mw-list-item"><a href="/w/index.php?title=Instruction_reference&amp;action=history" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				
+				</ul>
+			</div>
+		</div>
+		
+<div role="navigation" class="portlet mw-portlet mw-portlet-cactions-mobile"
+	id="p-cactions-mobile" aria-labelledby="p-cactions-mobile-label">
+	<h3 id="p-cactions-mobile-label" >Page actions</h3>
+	<div class="pBody">
+		<ul ><li id="main-mobile" class="selected mw-list-item"><a href="/wiki/Instruction_reference" title="Page">Page</a></li><li id="talk-mobile" class="new mw-list-item"><a href="/w/index.php?title=Talk:Instruction_reference&amp;action=edit&amp;redlink=1" title=" (page does not exist)" class="new">Discussion</a></li><li id="ca-more" class="mw-list-item"><a href="#p-cactions">More</a></li><li id="ca-tools" class="mw-list-item"><a href="#p-tb" title="Tools">Tools</a></li></ul>
+		
+	</div>
+</div>
+
+		<div role="navigation" class="portlet" id="p-personal" aria-labelledby="p-personal-label">
+			<h3 id="p-personal-label" >Personal tools</h3>
+			<div class="pBody">
+				<ul >
+				<li id="pt-createaccount" class="mw-list-item"><a href="/w/index.php?title=Special:CreateAccount&amp;returnto=Instruction+reference" title="You are encouraged to create an account and log in; however, it is not mandatory">Create account</a></li><li id="pt-login" class="mw-list-item"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Instruction+reference" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="portlet" id="p-logo" role="banner">
+			<a href="/wiki/Nesdev_Wiki" class="mw-wiki-logo"></a>
+		</div>
+		<div id="sidebar">
+		
+<div role="navigation" class="portlet mw-portlet mw-portlet-navigation"
+	id="p-navigation" aria-labelledby="p-navigation-label">
+	<h3 id="p-navigation-label" >Navigation</h3>
+	<div class="pBody">
+		<ul ><li id="n-Wiki-main-page" class="mw-list-item"><a href="/wiki/Nesdev_Wiki">Wiki main page</a></li><li id="n-NES-reference-guide" class="mw-list-item"><a href="/wiki/NES_reference_guide">NES reference guide</a></li><li id="n-Programming-guide" class="mw-list-item"><a href="/wiki/Programming_guide">Programming guide</a></li><li id="n-Projects" class="mw-list-item"><a href="/wiki/Projects">Projects</a></li><li id="n-Offline-wiki-snapshot" class="mw-list-item"><a rel="nofollow" href="https://archive.org/details/NesDevWiki">Offline wiki snapshot</a></li><li id="n-NESdev-Forums" class="mw-list-item"><a rel="nofollow" href="https://forums.nesdev.org/">NESdev Forums</a></li><li id="n-NESdev-Discord" class="mw-list-item"><a rel="nofollow" href="https://discord.gg/SddKcS6ehE">NESdev Discord</a></li><li id="n-recentchanges" class="mw-list-item"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li></ul>
+		
+	</div>
+</div>
+
+		<div role="search" class="portlet" id="p-search">
+			<h3 id="p-search-label" ><label for="searchInput">Search</label></h3>
+			<div class="pBody" id="searchBody">
+				<form action="/w/index.php" id="searchform"><input type="hidden" value="Special:Search" name="title"><input type="search" name="search" placeholder="Search NESdev Wiki" aria-label="Search NESdev Wiki" autocapitalize="sentences" spellcheck="false" title="Search NESdev Wiki [f]" accesskey="f" id="searchInput"><input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" class="searchButton" id="searchButton"> <input type="submit" name="fulltext" value="Search" title="Search the pages for this text" class="searchButton mw-fallbackSearchButton" id="mw-searchButton"></form>
+			</div>
+		</div>
+		
+<div role="navigation" class="portlet mw-portlet mw-portlet-tb"
+	id="p-tb" aria-labelledby="p-tb-label">
+	<h3 id="p-tb-label" >Tools</h3>
+	<div class="pBody">
+		<ul ><li id="t-whatlinkshere" class="mw-list-item"><a href="/wiki/Special:WhatLinksHere/Instruction_reference" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked" class="mw-list-item"><a href="/wiki/Special:RecentChangesLinked/Instruction_reference" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li><li id="t-print" class="mw-list-item"><a href="javascript:print();" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li><li id="t-permalink" class="mw-list-item"><a href="/w/index.php?title=Instruction_reference&amp;oldid=23486" title="Permanent link to this revision of this page">Permanent link</a></li><li id="t-info" class="mw-list-item"><a href="/w/index.php?title=Instruction_reference&amp;action=info" title="More information about this page">Page information</a></li><li id="n-Special-Pages" class="mw-list-item"><a href="/wiki/Special:SpecialPages">Special Pages</a></li></ul>
+		
+	</div>
+</div>
+
+		
+		</div>
+		<a href="#sidebar" title="Jump to navigation"
+			class="menu-toggle" id="sidebar-toggle"></a>
+		<a href="#p-personal" title="user tools"
+			class="menu-toggle" id="p-personal-toggle"></a>
+		<a href="#globalWrapper" title="back to top"
+			class="menu-toggle" id="globalWrapper-toggle"></a>
+	</div>
+	<!-- end of the left (by default at least) column -->
+	<div class="visualClear"></div>
+	<div id="footer" class="mw-footer" role="contentinfo"
+		>
+		<div id="f-poweredbyico" class="footer-icons">
+			<a href="https://www.mediawiki.org/" class="cdx-button cdx-button--fake-button cdx-button--size-large cdx-button--fake-button--enabled"><picture><source media="(min-width: 500px)" srcset="/w/resources/assets/poweredby_mediawiki.svg" width="88" height="31"><img src="/w/resources/assets/mediawiki_compact.svg" alt="Powered by MediaWiki" lang="en" width="25" height="25" loading="lazy"></picture></a>
+		</div>
+		<ul id="f-list">
+			<li id="lastmod"> This page was last edited on 12 February 2026, at 22:45.</li>
+			<li id="privacy"><a href="/wiki/Nesdev_wiki:Privacy_policy">Privacy policy</a></li><li id="about"><a href="/wiki/Nesdev_wiki:About">About NESdev Wiki</a></li><li id="disclaimers"><a href="/wiki/Nesdev_wiki:General_disclaimer">Disclaimers</a></li>
+		</ul>
+	</div>
+</div>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":141,"wgPageParseReport":{"limitreport":{"cputime":"0.244","walltime":"0.256","ppvisitednodes":{"value":1457,"limit":1000000},"revisionsize":{"value":57328,"limit":2097152},"postexpandincludesize":{"value":2694,"limit":2097152},"templateargumentsize":{"value":352,"limit":2097152},"expansiondepth":{"value":5,"limit":100},"expensivefunctioncount":{"value":0,"limit":100},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":0,"limit":5000000},"timingprofile":["100.00%   30.124      1 -total"," 78.37%   23.609     57 Template:Anchor"]},"cachereport":{"timestamp":"20260511231155","ttl":86400,"transientcontent":false}}});});</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"6c2a51884de146568600589c93ac5eda","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

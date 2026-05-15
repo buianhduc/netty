@@ -1,0 +1,42 @@
+# Build outputs
+/build/
+/cmake-build-*/
+/_deps/
+/Testing/
+/bin/
+/lib/*.a
+
+# CMake and build-system generated files
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+cmake_install.cmake
+compile_commands.json
+build.ninja
+.ninja_deps
+.ninja_log
+DartConfiguration.tcl
+
+# vcpkg generated artifacts
+vcpkg_installed/
+vcpkg-manifest-install.log
+
+# Test and trace output
+*.log
+!nestest.log
+!nestest_no_cycle.log
+[[]trace.log]
+
+# Local editor and IDE files
+/.idea/
+/.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# OS metadata
+.DS_Store
+
+# Local scratch files
+/tmp

@@ -46,6 +46,10 @@ if(BUILD_TESTING)
             src/internal/cpu_opcode_impl.cpp
             src/internal/rom.cpp
             src/internal/rom.h
+            src/internal/NesPPU.cpp
+            src/internal/NesPPU.h
+            src/internal/AddrRegister.cpp
+            src/internal/AddrRegister.h
     )
 
     if(DEFINED VCPKG_INSTALLED_DIR AND DEFINED VCPKG_TARGET_TRIPLET)
