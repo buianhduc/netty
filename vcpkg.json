@@ -1,0 +1,9 @@
+{
+  "dependencies" : [ {
+    "name" : "sdl2"
+  }, {
+    "name" : "gtest"
+  } ],
+  "version-string" : "0.0.1",
+  "name" : "nes"
+}

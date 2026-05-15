@@ -1,0 +1,19 @@
+Start testing: May 13 22:46 +07
+----------------------------------------------------------
+Unable to find executable: /Users/ducbui/Documents/Coding/nes_emulator/cpu_tests
+1/1 Testing: cpu_tests
+1/1 Test: cpu_tests
+Command: ""
+Directory: /Users/ducbui/Documents/Coding/nes_emulator
+"cpu_tests" start time: 
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"cpu_tests" end time: May 13 22:46 +07
+"cpu_tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 13 22:46 +07

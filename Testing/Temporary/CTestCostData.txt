@@ -1,0 +1,3 @@
+cpu_tests 0 0
+---
+cpu_tests
