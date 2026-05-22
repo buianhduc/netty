@@ -19,6 +19,9 @@ class CPU {
         CPU(): bus(Bus()) {};
         ~CPU();
         void interpret(std::vector<uint8_t> program);
+
+        void interrupt_nmi();
+
         void interpret_with_callback(const std::function<void(CPU *)> &callback);
         void load_and_run(std::vector<uint8_t> program);
         void mem_write(uint16_t address, uint8_t data);
@@ -39,10 +42,11 @@ class CPU {
         uint16_t program_counter_ = 0x8000;
         uint8_t stack_pointer_ = STACK_RESET;
         uint64_t cycles_ = 0;
+        uint8_t extra_cycles_ = 0;
         Logger* logger_ = nullptr;
 
         
-        uint16_t get_operand_address(AddressingMode mode);
+        uint16_t get_operand_address(AddressingMode mode, bool add_page_cross_cycle = false);
         void load (std::vector<uint8_t> program);
 
         void ADC(AddressingMode mode);

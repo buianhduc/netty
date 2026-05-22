@@ -14,8 +14,8 @@
  */
 void CPU::AND(AddressingMode mode)
 {
-    auto addr = get_operand_address(mode);
-    auto data = bus.read(addr);
+    auto addr = get_operand_address(mode, true);
+    auto data = bus.read(addr, true);
     register_a_ &= data;
     update_negative(data & register_a_);
     update_zero(data & register_a_);
@@ -34,13 +34,13 @@ void CPU::ASL(AddressingMode mode)
         return;
     }
     auto addr = get_operand_address(mode);
-    auto data = bus.read(addr);
+    auto data = bus.read(addr, true);
     if (data >> 7 == 1)
         status_.set(Flag::CARRY);
     else
         status_.remove(Flag::CARRY);
     data <<= 1;
-    bus.write(addr, data);
+    bus.write(addr, data, true);
 
     (void)update_zero(data);
     (void)update_negative(data);
@@ -61,7 +61,7 @@ void CPU::BEQ(AddressingMode mode)
 void CPU::BIT(AddressingMode mode)
 {
     auto addr = get_operand_address(mode);
-    auto value = bus.read(addr);
+    auto value = bus.read(addr, true);
     update_zero(value & register_a_);
 
     if ((value & 0b01000000) > 0)
@@ -116,7 +116,7 @@ void CPU::CLV(AddressingMode mode)
 }
 void CPU::CMP(AddressingMode mode)
 {
-    auto value = bus.read(get_operand_address(mode));
+    auto value = bus.read(get_operand_address(mode, true), true);
     const auto result = static_cast<uint8_t>(register_a_ - value);
     update_zero(result);
     update_negative(result);
@@ -124,7 +124,7 @@ void CPU::CMP(AddressingMode mode)
 }
 void CPU::CPX(AddressingMode mode)
 {
-    auto value = bus.read(get_operand_address(mode));
+    auto value = bus.read(get_operand_address(mode, true), true);
     const auto result = static_cast<uint8_t>(register_x_ - value);
     update_zero(result);
     update_negative(result);
@@ -132,7 +132,7 @@ void CPU::CPX(AddressingMode mode)
 }
 void CPU::CPY(AddressingMode mode)
 {
-    auto value = bus.read(get_operand_address(mode));
+    auto value = bus.read(get_operand_address(mode, true), true);
     const auto result = static_cast<uint8_t>(register_y_ - value);
     update_zero(result);
     update_negative(result);
@@ -141,10 +141,10 @@ void CPU::CPY(AddressingMode mode)
 void CPU::DEC(AddressingMode mode)
 {
     auto addr = get_operand_address(mode);
-    auto value = bus.read(addr);
+    auto value = bus.read(addr, true);
     update_zero(value - 1);
     update_negative(value - 1);
-    bus.write(addr, value - 1);
+    bus.write(addr, value - 1, true);
 }
 void CPU::DEX(AddressingMode mode)
 {
@@ -160,8 +160,8 @@ void CPU::DEY(AddressingMode mode)
 }
 void CPU::EOR(AddressingMode mode)
 {
-    auto addr = get_operand_address(mode);
-    auto value = bus.read(addr);
+    auto addr = get_operand_address(mode, true);
+    auto value = bus.read(addr, true);
     update_negative(register_a_ ^ value);
     update_zero(register_a_ ^ value);
     register_a_ ^= value;
@@ -169,10 +169,10 @@ void CPU::EOR(AddressingMode mode)
 void CPU::INC(AddressingMode mode)
 {
     auto addr = get_operand_address(mode);
-    auto value = bus.read(addr);
+    auto value = bus.read(addr, true);
     update_negative(value + 1);
     update_zero(value + 1);
-    bus.write(addr, value + 1);
+    bus.write(addr, value + 1, true);
 }
 void CPU::INX(AddressingMode mode)
 {
@@ -190,49 +190,49 @@ void CPU::JMP(AddressingMode mode)
 {
     if (mode == AddressingMode::Absolute)
     {
-        program_counter_ = bus.read_u16(program_counter_);
+        program_counter_ = bus.read_u16(program_counter_, true);
     }
     else if (mode == AddressingMode::Indirect)
     {
-        auto mem_addr = bus.read_u16(program_counter_);
+        auto mem_addr = bus.read_u16(program_counter_, true);
         program_counter_ = [this, mem_addr]()
         {
             if ((mem_addr & 0x00ffu) == 0x00ffu)
             {
-                uint16_t lo = this->bus.read(mem_addr);
-                uint16_t hi = this->bus.read(mem_addr & 0xFF00);
+                uint16_t lo = this->bus.read(mem_addr, true);
+                uint16_t hi = this->bus.read(mem_addr & 0xFF00, true);
                 return (static_cast<uint16_t>(static_cast<uint16_t>(hi << 8) | lo));
             }
-            return this->bus.read_u16(mem_addr);
+            return this->bus.read_u16(mem_addr, true);
         }();
     };
 }
 void CPU::JSR(AddressingMode mode)
 {
     stack_push_u16(program_counter_ + 2 - 1);
-    const auto target_address = bus.read_u16(program_counter_);
+    const auto target_address = bus.read_u16(program_counter_, true);
     program_counter_ = target_address;
 }
 void CPU::LDA(AddressingMode mode)
 {
-    auto addr = get_operand_address(mode);
-    auto value = bus.read(addr);
+    auto addr = get_operand_address(mode, true);
+    auto value = bus.read(addr, true);
     register_a_ = value;
     update_negative(register_a_);
     update_zero(register_a_);
 }
 void CPU::LDX(AddressingMode mode)
 {
-    auto addr = get_operand_address(mode);
-    auto value = bus.read(addr);
+    auto addr = get_operand_address(mode, true);
+    auto value = bus.read(addr, true);
     register_x_ = value;
     update_negative(register_x_);
     update_zero(register_x_);
 }
 void CPU::LDY(AddressingMode mode)
 {
-    auto addr = get_operand_address(mode);
-    auto value = bus.read(addr);
+    auto addr = get_operand_address(mode, true);
+    auto value = bus.read(addr, true);
     register_y_ = value;
     update_negative(register_y_);
     update_zero(register_y_);
@@ -250,22 +250,25 @@ void CPU::LSR(AddressingMode mode)
         return;
     }
     auto addr = get_operand_address(mode);
-    auto value = bus.read(addr);
+    auto value = bus.read(addr, true);
     if ((value & 1) == 1) status_.set(CARRY);
     else status_.remove(CARRY);
     value = value >> 1;
     update_zero(value);
     update_negative(value);
-    bus.write(addr, value);
+    bus.write(addr, value, true);
 }
 void CPU::NOP(AddressingMode mode)
 {
+    if (mode == Absolute_X) {
+        static_cast<void>(get_operand_address(mode, true));
+    }
     return;
 }
 void CPU::ORA(AddressingMode mode)
 {
-    auto addr = get_operand_address(mode);
-    auto data = bus.read(addr);
+    auto addr = get_operand_address(mode, true);
+    auto data = bus.read(addr, true);
     register_a_ = (data | register_a_);
     update_negative(register_a_);
     update_zero(register_a_);
@@ -310,7 +313,7 @@ void CPU::ROL(AddressingMode mode)
         return;
     }
     auto addr = get_operand_address(mode);
-    auto data = bus.read(addr);
+    auto data = bus.read(addr, true);
     auto old_carry = status_.is_set(Flag::CARRY);
 
     if (data >> 7 == 1)
@@ -322,7 +325,7 @@ void CPU::ROL(AddressingMode mode)
         data |= 1;
     update_negative(data);
     update_zero(data);
-    bus.write(addr, data);
+    bus.write(addr, data, true);
 }
 void CPU::ROR(AddressingMode mode)
 {
@@ -342,7 +345,7 @@ void CPU::ROR(AddressingMode mode)
         return;
     }
     auto addr = get_operand_address(mode);
-    auto data = bus.read(addr);
+    auto data = bus.read(addr, true);
     auto old_carry = status_.is_set(Flag::CARRY);
 
     if ((data & 1) == 1)
@@ -354,7 +357,7 @@ void CPU::ROR(AddressingMode mode)
         data |= 0b10000000;
     update_negative(data);
     update_zero(data);
-    bus.write(addr, data);
+    bus.write(addr, data, true);
 }
 void CPU::RTI(AddressingMode mode)
 {
@@ -370,8 +373,8 @@ void CPU::RTS(AddressingMode mode)
 }
 void CPU::SBC(AddressingMode mode)
 {
-    auto address = get_operand_address(mode);
-    auto value = bus.read(address);
+    auto address = get_operand_address(mode, true);
+    auto value = bus.read(address, true);
 
     add_to_register_a(-value-1);
 }
@@ -391,19 +394,19 @@ void CPU::STA(AddressingMode mode)
 {
     auto address = get_operand_address(mode);
 
-    bus.write(address, register_a_);
+    bus.write(address, register_a_, true);
 }
 void CPU::STX(AddressingMode mode)
 {
     auto address = get_operand_address(mode);
 
-    bus.write(address, register_x_);
+    bus.write(address, register_x_, true);
 }
 void CPU::STY(AddressingMode mode)
 {
     auto address = get_operand_address(mode);
 
-    bus.write(address, register_y_);
+    bus.write(address, register_y_, true);
 }
 void CPU::TAX(AddressingMode mode)
 {

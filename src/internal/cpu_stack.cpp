@@ -3,11 +3,11 @@
 uint8_t CPU::stack_pop()
 {
     stack_pointer_ += 1;
-    return bus.read(static_cast<uint16_t>(STACK + stack_pointer_));
+    return bus.read(static_cast<uint16_t>(STACK + stack_pointer_), true);
 };
 void CPU::stack_push(uint8_t data)
 {
-    bus.write(static_cast<uint16_t>(STACK + stack_pointer_), data);
+    bus.write(static_cast<uint16_t>(STACK + stack_pointer_), data, true);
     stack_pointer_ -= 1;
 };
 uint16_t CPU::stack_pop_u16()

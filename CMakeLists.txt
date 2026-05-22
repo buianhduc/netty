@@ -9,6 +9,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_package(SDL2 CONFIG REQUIRED)
 
 add_library(nes_core
+    src/common/Color.cpp
+    src/common/Color.h
     src/internal/bus.cpp
     src/internal/cpu.cpp
     src/internal/cpu_stack.cpp
@@ -16,6 +18,32 @@ add_library(nes_core
         src/internal/cpu_opcode_impl.cpp
         src/internal/rom.cpp
         src/internal/rom.h
+        src/internal/ppu/NesPPU.cpp
+        src/internal/ppu/NesPPU.h
+        src/internal/ppu/registers/ControllerRegister.cpp
+        src/internal/ppu/registers/ControllerRegister.h
+        src/internal/ppu/registers/DataRegister.cpp
+        src/internal/ppu/registers/DataRegister.h
+        src/internal/ppu/registers/MaskRegister.cpp
+        src/internal/ppu/registers/MaskRegister.h
+        src/internal/ppu/registers/OamAddressRegister.cpp
+        src/internal/ppu/registers/OamAddressRegister.h
+        src/internal/ppu/registers/OamDataRegister.cpp
+        src/internal/ppu/registers/OamDataRegister.h
+        src/internal/ppu/registers/OamDmaRegister.cpp
+        src/internal/ppu/registers/OamDmaRegister.h
+        src/internal/ppu/registers/PPURegister.cpp
+        src/internal/ppu/registers/PPURegister.h
+        src/internal/ppu/registers/ScrollRegister.cpp
+        src/internal/ppu/registers/ScrollRegister.h
+        src/internal/ppu/registers/StatusRegister.cpp
+        src/internal/ppu/registers/StatusRegister.h
+        src/internal/ppu/registers/AddrRegister.cpp
+        src/internal/ppu/registers/AddrRegister.h
+        src/common/Frame.cpp
+        src/common/Frame.h
+        src/internal/Joypad.cpp
+        src/internal/Joypad.h
 )
 
 target_include_directories(nes_core
@@ -28,6 +56,28 @@ add_executable(nes_emulator
         src/internal/cpu_opcode_impl.cpp
         src/internal/rom.cpp
         src/internal/rom.h
+        src/internal/ppu/NesPPU.cpp
+        src/internal/ppu/NesPPU.h
+        src/internal/ppu/registers/ControllerRegister.cpp
+        src/internal/ppu/registers/ControllerRegister.h
+        src/internal/ppu/registers/DataRegister.cpp
+        src/internal/ppu/registers/DataRegister.h
+        src/internal/ppu/registers/MaskRegister.cpp
+        src/internal/ppu/registers/MaskRegister.h
+        src/internal/ppu/registers/OamAddressRegister.cpp
+        src/internal/ppu/registers/OamAddressRegister.h
+        src/internal/ppu/registers/OamDataRegister.cpp
+        src/internal/ppu/registers/OamDataRegister.h
+        src/internal/ppu/registers/OamDmaRegister.cpp
+        src/internal/ppu/registers/OamDmaRegister.h
+        src/internal/ppu/registers/PPURegister.cpp
+        src/internal/ppu/registers/PPURegister.h
+        src/internal/ppu/registers/ScrollRegister.cpp
+        src/internal/ppu/registers/ScrollRegister.h
+        src/internal/ppu/registers/StatusRegister.cpp
+        src/internal/ppu/registers/StatusRegister.h
+        src/internal/ppu/registers/AddrRegister.cpp
+        src/internal/ppu/registers/AddrRegister.h
 )
 
 target_link_libraries(nes_emulator
@@ -43,13 +93,54 @@ if(BUILD_TESTING)
 
     add_executable(cpu_tests
         test/cpu_tests.cc
-            src/internal/cpu_opcode_impl.cpp
-            src/internal/rom.cpp
-            src/internal/rom.h
-            src/internal/NesPPU.cpp
-            src/internal/NesPPU.h
-            src/internal/AddrRegister.cpp
-            src/internal/AddrRegister.h
+            test/ppu_tests.cc
+            #            src/internal/cpu_opcode_impl.cpp
+#            src/internal/rom.cpp
+#            src/internal/rom.h
+#            src/internal/ppu/NesPPU.cpp
+#            src/internal/ppu/NesPPU.h
+#            src/internal/ppu/AddrRegister.cpp
+#            src/internal/ppu/AddrRegister.h
+#            src/internal/ppu/ControllerRegister.cpp
+#            src/internal/ppu/ControllerRegister.h
+#            src/internal/ppu/DataRegister.cpp
+#            src/internal/ppu/DataRegister.h
+#            src/internal/ppu/MaskRegister.cpp
+#            src/internal/ppu/MaskRegister.h
+#            src/internal/ppu/StatusRegister.cpp
+#            src/internal/ppu/StatusRegister.h
+#            src/internal/ppu/OamAddressRegister.cpp
+#            src/internal/ppu/OamAddressRegister.h
+#            src/internal/ppu/OamDataRegister.cpp
+#            src/internal/ppu/OamDataRegister.h
+#            src/internal/ppu/ScrollRegister.cpp
+#            src/internal/ppu/ScrollRegister.h
+#            src/internal/ppu/OamDmaRegister.cpp
+#            src/internal/ppu/OamDmaRegister.h
+#            src/internal/ppu/PPURegister.cpp
+#            src/internal/ppu/PPURegister.h
+#            src/internal/Color.cpp
+#            src/internal/Color.h
+#            src/internal/ppu/registers/ControllerRegister.cpp
+#            src/internal/ppu/registers/ControllerRegister.h
+#            src/internal/ppu/registers/DataRegister.cpp
+#            src/internal/ppu/registers/DataRegister.h
+#            src/internal/ppu/registers/MaskRegister.cpp
+#            src/internal/ppu/registers/MaskRegister.h
+#            src/internal/ppu/registers/OamAddressRegister.cpp
+#            src/internal/ppu/registers/OamAddressRegister.h
+#            src/internal/ppu/registers/OamDataRegister.cpp
+#            src/internal/ppu/registers/OamDataRegister.h
+#            src/internal/ppu/registers/OamDmaRegister.cpp
+#            src/internal/ppu/registers/OamDmaRegister.h
+#            src/internal/ppu/registers/PPURegister.cpp
+#            src/internal/ppu/registers/PPURegister.h
+#            src/internal/ppu/registers/ScrollRegister.cpp
+#            src/internal/ppu/registers/ScrollRegister.h
+#            src/internal/ppu/registers/StatusRegister.cpp
+#            src/internal/ppu/registers/StatusRegister.h
+#            src/internal/ppu/registers/AddrRegister.cpp
+#            src/internal/ppu/registers/AddrRegister.h
     )
 
     if(DEFINED VCPKG_INSTALLED_DIR AND DEFINED VCPKG_TARGET_TRIPLET)

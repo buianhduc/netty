@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 /// # Status Register (P) http://wiki.nesdev.com/w/index.php/Status_flags
 ///
 ///  7 6 5 4 3 2 1 0
@@ -42,7 +43,7 @@ class BitFlags {
             status &= static_cast<uint8_t>(~flag);
             return *this;
         }
-        bool is_set(uint8_t flag) {
+        [[nodiscard]] bool is_set(uint8_t flag) const {
             return (status & flag);
         }
 };

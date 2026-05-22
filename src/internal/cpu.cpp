@@ -28,7 +28,7 @@ std::string instruction_bytes(const Bus& bus, uint16_t pc, uint8_t len) {
     std::ostringstream out;
     for (uint8_t i = 0; i < 3; ++i) {
         if (i < len) {
-            out << hex_u8(bus.read(static_cast<uint16_t>(pc + i)));
+            out << hex_u8(bus.read(static_cast<uint16_t>(pc + i), true));
         } else {
             out << "  ";
         }
@@ -40,10 +40,7 @@ std::string instruction_bytes(const Bus& bus, uint16_t pc, uint8_t len) {
 }
 
 std::string trace_u8(const Bus& bus, uint16_t address) {
-    if (address >= PPU_REGISTERS && address <= PPU_REGISTERS_MIRROR_END) {
-        return "??";
-    }
-    return hex_u8(bus.read(address));
+    return hex_u8(bus.peek(address));
 }
 }
 
@@ -56,6 +53,17 @@ void CPU::interpret(std::vector<uint8_t> program)
     interpret_with_callback([](CPU *) {});
 }
 
+void CPU::interrupt_nmi() {
+    stack_push_u16(program_counter_);
+    status_.remove(BREAK);
+    status_.set(UNUSED);
+    stack_push(status_.status);
+    status_.set(INTERRUPT);
+    bus.tick(7);
+    cycles_ += 7;
+    program_counter_ = bus.read_u16(0xfffa, true);
+}
+
 void CPU::load_and_run(std::vector<uint8_t> program)
 {
     interpret(std::move(program));
@@ -63,7 +71,7 @@ void CPU::load_and_run(std::vector<uint8_t> program)
 
 void CPU::mem_write(uint16_t address, uint8_t data)
 {
-    bus.write(address, data);
+    bus.write(address, data, true);
 }
 
 uint8_t CPU::register_a() const
@@ -102,8 +110,9 @@ void CPU::reset() {
     register_y_ = 0;
     stack_pointer_ = STACK_RESET;
     cycles_ = 0;
-    // program_counter_ = bus.read_u16(0xfffc);
-    program_counter_ = 0xC000;
+    extra_cycles_ = 0;
+    program_counter_ = bus.read_u16(0xfffc, true);
+    // program_counter_ = 0xC000;
 }
 
 void CPU::interpret_with_callback(const std::function<void(CPU *)>& callback)
@@ -111,15 +120,19 @@ void CPU::interpret_with_callback(const std::function<void(CPU *)>& callback)
 
     while (true)
     {
-        const uint8_t opcode = bus.read(program_counter_++);
+        if (bus.poll_nmi_status() != std::nullopt)
+            interrupt_nmi();
+        // Fetch
+        const uint8_t opcode = bus.read(program_counter_++, true);
 
         auto program_counter_state = program_counter_;
 
-
+        // Decode & Execute
         if (const auto instruction = InstructionTable.find(opcode);
             instruction != InstructionTable.end())
         {
 
+            extra_cycles_ = 0;
             trace_instruction(static_cast<uint16_t>(program_counter_ - 1), instruction->second);
             const auto mode = instruction->second.mode;
             const auto& mnemonic = instruction->second.mnemonic;
@@ -644,8 +657,7 @@ void CPU::interpret_with_callback(const std::function<void(CPU *)>& callback)
             case 0x98u:
                 TYA(instruction->second.mode);
                 break;
-
-
+            // Unofficial nops
             case 0x04:
                 case 0x44:
                 case 0x64:
@@ -662,15 +674,25 @@ void CPU::interpret_with_callback(const std::function<void(CPU *)>& callback)
                 case 0x7c:
                 case 0xdc:
                 case 0xfc:
-                    // TODO
+                    NOP(instruction->second.mode);
                     break;
+
             default:
                 assert(false);
             }
+
+            const auto instruction_cycles = static_cast<uint8_t>(
+                instruction->second.cycles + extra_cycles_);
+            bus.tick(instruction_cycles);
             if (program_counter_state == program_counter_) {
                 program_counter_ += instruction->second.len - 1;
             }
-            cycles_ += instruction->second.cycles;
+            cycles_ += instruction_cycles;
+            const auto dma_stall_cycles = bus.take_oam_dma_stall_cycles(cycles_);
+            if (dma_stall_cycles > 0) {
+                bus.tick(dma_stall_cycles);
+                cycles_ += dma_stall_cycles;
+            }
             callback(this);
         }
 
@@ -708,7 +730,7 @@ void CPU::ARR(AddressingMode mode)
 
 void CPU::AXS(AddressingMode mode)
 {
-    const uint8_t value = bus.read(get_operand_address(mode));
+    const uint8_t value = bus.read(get_operand_address(mode), true);
     const uint8_t source = register_a_ & register_x_;
     const uint8_t result = static_cast<uint8_t>(source - value);
 
@@ -721,8 +743,8 @@ void CPU::AXS(AddressingMode mode)
 void CPU::DCP(AddressingMode mode)
 {
     const uint16_t address = get_operand_address(mode);
-    const uint8_t value = static_cast<uint8_t>(bus.read(address) - 1);
-    bus.write(address, value);
+    const uint8_t value = static_cast<uint8_t>(bus.read(address, true) - 1);
+    bus.write(address, value, true);
 
     const uint8_t result = static_cast<uint8_t>(register_a_ - value);
     update_zero(result);
@@ -733,15 +755,15 @@ void CPU::DCP(AddressingMode mode)
 void CPU::ISB(AddressingMode mode)
 {
     const uint16_t address = get_operand_address(mode);
-    const uint8_t value = static_cast<uint8_t>(bus.read(address) + 1);
-    bus.write(address, value);
+    const uint8_t value = static_cast<uint8_t>(bus.read(address, true) + 1);
+    bus.write(address, value, true);
 
     add_to_register_a(static_cast<uint8_t>(-value - 1));
 }
 
 void CPU::LAX(AddressingMode mode)
 {
-    const uint8_t value = bus.read(get_operand_address(mode));
+    const uint8_t value = bus.read(get_operand_address(mode, true), true);
     register_a_ = value;
     register_x_ = value;
     update_zero(value);
@@ -751,14 +773,14 @@ void CPU::LAX(AddressingMode mode)
 void CPU::RLA(AddressingMode mode)
 {
     const uint16_t address = get_operand_address(mode);
-    uint8_t value = bus.read(address);
+    uint8_t value = bus.read(address, true);
     const bool old_carry = status_.is_set(Flag::CARRY);
 
     (value & 0x80u) != 0 ? status_.set(Flag::CARRY) : status_.remove(Flag::CARRY);
     value = static_cast<uint8_t>(value << 1);
     if (old_carry)
         value |= 1u;
-    bus.write(address, value);
+    bus.write(address, value, true);
 
     register_a_ &= value;
     update_zero(register_a_);
@@ -768,47 +790,47 @@ void CPU::RLA(AddressingMode mode)
 void CPU::RRA(AddressingMode mode)
 {
     const uint16_t address = get_operand_address(mode);
-    uint8_t value = bus.read(address);
+    uint8_t value = bus.read(address, true);
     const bool old_carry = status_.is_set(Flag::CARRY);
 
     (value & 1u) != 0 ? status_.set(Flag::CARRY) : status_.remove(Flag::CARRY);
     value >>= 1;
     if (old_carry)
         value |= 0x80u;
-    bus.write(address, value);
+    bus.write(address, value, true);
 
     add_to_register_a(value);
 }
 
 void CPU::SAX(AddressingMode mode)
 {
-    bus.write(get_operand_address(mode), static_cast<uint8_t>(register_a_ & register_x_));
+    bus.write(get_operand_address(mode), static_cast<uint8_t>(register_a_ & register_x_), true);
 }
 
 void CPU::SHX(AddressingMode mode)
 {
-    const uint16_t base = bus.read_u16(program_counter_);
+    const uint16_t base = bus.read_u16(program_counter_, true);
     const uint16_t address = get_operand_address(mode);
     const uint8_t value = static_cast<uint8_t>(register_x_ & (((base >> 8) + 1u) & 0xffu));
-    bus.write(address, value);
+    bus.write(address, value, true);
 }
 
 void CPU::SHY(AddressingMode mode)
 {
-    const uint16_t base = bus.read_u16(program_counter_);
+    const uint16_t base = bus.read_u16(program_counter_, true);
     const uint16_t address = get_operand_address(mode);
     const uint8_t value = static_cast<uint8_t>(register_y_ & (((base >> 8) + 1u) & 0xffu));
-    bus.write(address, value);
+    bus.write(address, value, true);
 }
 
 void CPU::SLO(AddressingMode mode)
 {
     const uint16_t address = get_operand_address(mode);
-    uint8_t value = bus.read(address);
+    uint8_t value = bus.read(address, true);
 
     (value & 0x80u) != 0 ? status_.set(Flag::CARRY) : status_.remove(Flag::CARRY);
     value = static_cast<uint8_t>(value << 1);
-    bus.write(address, value);
+    bus.write(address, value, true);
 
     register_a_ |= value;
     update_zero(register_a_);
@@ -818,11 +840,11 @@ void CPU::SLO(AddressingMode mode)
 void CPU::SRE(AddressingMode mode)
 {
     const uint16_t address = get_operand_address(mode);
-    uint8_t value = bus.read(address);
+    uint8_t value = bus.read(address, true);
 
     (value & 1u) != 0 ? status_.set(Flag::CARRY) : status_.remove(Flag::CARRY);
     value >>= 1;
-    bus.write(address, value);
+    bus.write(address, value, true);
 
     register_a_ ^= value;
     update_zero(register_a_);
@@ -836,10 +858,10 @@ void CPU::trace_instruction(uint16_t pc, const OpCode& instruction)
     }
 
     const uint8_t operand = instruction.len > 1
-        ? bus.read(static_cast<uint16_t>(pc + 1))
+        ? bus.read(static_cast<uint16_t>(pc + 1), true)
         : 0;
     const uint16_t operand_u16 = instruction.len > 2
-        ? static_cast<uint16_t>(operand | (bus.read(static_cast<uint16_t>(pc + 2)) << 8))
+        ? static_cast<uint16_t>(operand | (bus.read(static_cast<uint16_t>(pc + 2), true) << 8))
         : 0;
 
     std::ostringstream asm_text;
@@ -896,10 +918,10 @@ void CPU::trace_instruction(uint16_t pc, const OpCode& instruction)
     {
         const uint16_t address = (operand_u16 & 0x00ffu) == 0x00ffu
             ? static_cast<uint16_t>(
-                bus.read(operand_u16) |
-                (bus.read(static_cast<uint16_t>(operand_u16 & 0xff00u)) << 8)
+                bus.read(operand_u16, true) |
+                (bus.read(static_cast<uint16_t>(operand_u16 & 0xff00u), true) << 8)
             )
-            : bus.read_u16(operand_u16);
+            : bus.read_u16(operand_u16, true);
         asm_text << " ($" << hex_u16(operand_u16) << ") = " << hex_u16(address);
         break;
     }
@@ -907,7 +929,7 @@ void CPU::trace_instruction(uint16_t pc, const OpCode& instruction)
     {
         const uint8_t pointer = static_cast<uint8_t>(operand + register_x_);
         const uint16_t address = static_cast<uint16_t>(
-            bus.read(pointer) | (bus.read(static_cast<uint8_t>(pointer + 1)) << 8)
+            bus.read(pointer, true) | (bus.read(static_cast<uint8_t>(pointer + 1), true) << 8)
         );
         asm_text << " ($" << hex_u8(operand) << ",X) @ " << hex_u8(pointer)
                  << " = " << hex_u16(address) << " = " << trace_u8(bus, address);
@@ -916,7 +938,7 @@ void CPU::trace_instruction(uint16_t pc, const OpCode& instruction)
     case Indirect_Y:
     {
         const uint16_t base = static_cast<uint16_t>(
-            bus.read(operand) | (bus.read(static_cast<uint8_t>(operand + 1)) << 8)
+            bus.read(operand, true) | (bus.read(static_cast<uint8_t>(operand + 1), true) << 8)
         );
         const uint16_t address = static_cast<uint16_t>(base + register_y_);
         asm_text << " ($" << hex_u8(operand) << "),Y = " << hex_u16(base)
@@ -954,49 +976,61 @@ void CPU::trace_instruction(uint16_t pc, const OpCode& instruction)
     logger_->log(line.str());
 }
 
-uint16_t CPU::get_operand_address(AddressingMode mode)
+uint16_t CPU::get_operand_address(AddressingMode mode, bool add_page_cross_cycle)
 {
     switch (mode)
     {
     case AddressingMode::Immediate:
         return program_counter_;
     case AddressingMode::ZeroPage:
-        return bus.read(program_counter_);
+        return bus.read(program_counter_, true);
     case AddressingMode::ZeroPage_X:
-        return static_cast<uint8_t>(bus.read(program_counter_) + register_x_);
+        return static_cast<uint8_t>(bus.read(program_counter_, true) + register_x_);
     case AddressingMode::ZeroPage_Y:
-        return static_cast<uint8_t>(bus.read(program_counter_) + register_y_);
+        return static_cast<uint8_t>(bus.read(program_counter_, true) + register_y_);
     case AddressingMode::Absolute:
     {
-        return bus.read_u16(program_counter_);
+        return bus.read_u16(program_counter_, true);
     }
     case AddressingMode::Absolute_X:
     {
-        uint16_t base = bus.read_u16(program_counter_);
-        return base + register_x_;
+        uint16_t base = bus.read_u16(program_counter_, true);
+        const uint16_t address = static_cast<uint16_t>(base + register_x_);
+        if (add_page_cross_cycle && (base & 0xff00u) != (address & 0xff00u)) {
+            extra_cycles_ += 1;
+        }
+        return address;
     }
     case AddressingMode::Absolute_Y:
     {
-        uint16_t base = bus.read_u16(program_counter_);
-        return base + register_y_;
+        uint16_t base = bus.read_u16(program_counter_, true);
+        const uint16_t address = static_cast<uint16_t>(base + register_y_);
+        if (add_page_cross_cycle && (base & 0xff00u) != (address & 0xff00u)) {
+            extra_cycles_ += 1;
+        }
+        return address;
     }
     case AddressingMode::Indirect_X:
     {
-        const uint8_t ptr = static_cast<uint8_t>(bus.read(program_counter_) + register_x_);
-        const uint8_t lo = bus.read(ptr);
-        const uint8_t hi = bus.read(static_cast<uint8_t>(ptr + 1));
+        const uint8_t ptr = static_cast<uint8_t>(bus.read(program_counter_, true) + register_x_);
+        const uint8_t lo = bus.read(ptr, true);
+        const uint8_t hi = bus.read(static_cast<uint8_t>(ptr + 1), true);
 
         return static_cast<uint16_t>(hi << 8) | static_cast<uint16_t>(lo);
     }
 
     case AddressingMode::Indirect_Y:
     {
-        const uint8_t ptr = bus.read(program_counter_);
-        const uint8_t lo = bus.read(ptr);
-        const uint8_t hi = bus.read(static_cast<uint8_t>(ptr + 1));
+        const uint8_t ptr = bus.read(program_counter_, true);
+        const uint8_t lo = bus.read(ptr, true);
+        const uint8_t hi = bus.read(static_cast<uint8_t>(ptr + 1), true);
         const uint16_t base = static_cast<uint16_t>(hi << 8) | static_cast<uint16_t>(lo);
 
-        return static_cast<uint16_t>(base + register_y_);
+        const uint16_t address = static_cast<uint16_t>(base + register_y_);
+        if (add_page_cross_cycle && (base & 0xff00u) != (address & 0xff00u)) {
+            extra_cycles_ += 1;
+        }
+        return address;
     }
     default:
         break;
@@ -1008,7 +1042,7 @@ void CPU::load(std::vector<uint8_t> program)
 {
     for (size_t i = 0; i < program.size(); i++)
     {
-        bus.write(static_cast<uint16_t>(0x0600 + i), program[i]);
+        bus.write(static_cast<uint16_t>(0x0600 + i), program[i], true);
     }
     program_counter_ = 0x0600;
 }
@@ -1029,8 +1063,14 @@ void CPU::branch_if(bool condition)
 {
     if (condition)
     {
-        const auto offset = static_cast<int8_t>(bus.read(program_counter_));
-        program_counter_ = static_cast<uint16_t>(program_counter_ + 1 + offset);
+        const auto offset = static_cast<int8_t>(bus.read(program_counter_, true));
+        const auto base = static_cast<uint16_t>(program_counter_ + 1);
+        const auto target = static_cast<uint16_t>(base + offset);
+        extra_cycles_ += 1;
+        if ((base & 0xff00u) != (target & 0xff00u)) {
+            extra_cycles_ += 1;
+        }
+        program_counter_ = target;
     }
 }
 
@@ -1070,8 +1110,8 @@ void CPU::set_register_a(uint8_t data)
  */
 void CPU::ADC(AddressingMode mode)
 {
-    auto address = get_operand_address(mode);
-    auto value = bus.read(address);
+    auto address = get_operand_address(mode, true);
+    auto value = bus.read(address, true);
 
     add_to_register_a(value);
 }

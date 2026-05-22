@@ -40,3 +40,8 @@ vcpkg-manifest-install.log
 
 # Local scratch files
 /tmp
+
+# Nes and dump files
+*.nes
+*.log
+/rom/*
