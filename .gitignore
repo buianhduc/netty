@@ -45,3 +45,4 @@ vcpkg-manifest-install.log
 *.nes
 *.log
 ./rom/*
+./target/*
