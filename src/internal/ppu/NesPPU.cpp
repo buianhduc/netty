@@ -154,10 +154,21 @@ void NesPPU::write_to_oam_dma(uint8_t page, std::span<const uint8_t, 256> data) 
     }
 }
 
+bool NesPPU::is_sprite_0_hit(uint64_t cycle) const {
+    const auto y = static_cast<size_t>(oam_data[0]);
+    const auto x = static_cast<size_t>(oam_data[3]);
+    return y == static_cast<size_t>(scanline)
+        && x <= cycle
+        && mask_register.show_sprite();
+}
+
 bool NesPPU::tick(uint64_t i) {
     cycles_ += i;
 
     while (cycles_ >= 341u) {
+        if (is_sprite_0_hit(cycles_)) {
+            status_register.set_sprite_zero_hit(true);
+        }
         cycles_ = cycles_ - 341u;
         scanline += 1;
 
@@ -172,6 +183,8 @@ bool NesPPU::tick(uint64_t i) {
 
         if (scanline >= 262) {
             scanline = 0;
+            nmi_interrupt = std::nullopt;
+            status_register.set_sprite_zero_hit(false);
             status_register.clear_vblank_started();
             return true;
         }

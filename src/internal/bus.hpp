@@ -16,6 +16,7 @@ class Bus {
     uint64_t cycles_ = 0;
     bool oam_dma_requested_ = false;
     bool frame_complete_ = false;
+    bool nmi_frame_event_ = false;
 
     public:
     explicit Bus(const ROM &rom);
@@ -31,7 +32,12 @@ class Bus {
     [[nodiscard]] uint8_t read_prg_rom(uint16_t address) const;
     void tick(uint64_t cycles) {
         cycles_ += cycles;
+        const bool nmi_before = nes_ppu_.nmi_interrupt.has_value();
         frame_complete_ = nes_ppu_.tick(cycles * 3) || frame_complete_;
+        const bool nmi_after = nes_ppu_.nmi_interrupt.has_value();
+        if (!nmi_before && nmi_after) {
+            nmi_frame_event_ = true;
+        }
     }
 
     [[nodiscard]] uint64_t cycles() const { return cycles_; }
@@ -40,6 +46,11 @@ class Bus {
     [[nodiscard]] bool take_frame_complete() {
         const bool result = frame_complete_;
         frame_complete_ = false;
+        return result;
+    }
+    [[nodiscard]] bool take_nmi_frame_event() {
+        const bool result = nmi_frame_event_;
+        nmi_frame_event_ = false;
         return result;
     }
     [[nodiscard]] Joypad& joypad() { return joypad_; }

@@ -11,7 +11,7 @@ const std::vector<uint8_t> NES_TAG = std::vector<uint8_t>({0x4E, 0x45, 0x53,
 #define PRG_ROM_PAGE_SIZE (16*1024)
 #define CHR_ROM_PAGE_SIZE (8*1024)
 
-ROM::ROM() : prg_rom(0x8000, 0) {}
+ROM::ROM() : prg_rom(0x8000, 0), chr_ram(CHR_ROM_PAGE_SIZE, 0), uses_chr_ram(true) {}
 
 ROM::ROM(const std::vector<uint8_t>& raw) {
     // Read the first 16 bytes
@@ -49,7 +49,15 @@ ROM::ROM(const std::vector<uint8_t>& raw) {
     this->prg_rom = std::vector(raw.begin() + prg_rom_start,
         raw.begin() + prg_rom_start +
         prg_rom_size);
-    this->chr_rom = std::vector(raw.begin() + chr_rom_start, raw.begin() +
-        chr_rom_start +
-        chr_rom_size);
+    if (chr_rom_size == 0) {
+        this->uses_chr_ram = true;
+        this->chr_ram = std::vector<uint8_t>(CHR_ROM_PAGE_SIZE, 0);
+        this->chr_rom.clear();
+    } else {
+        this->uses_chr_ram = false;
+        this->chr_ram.clear();
+        this->chr_rom = std::vector(raw.begin() + chr_rom_start, raw.begin() +
+            chr_rom_start +
+            chr_rom_size);
+    }
 }

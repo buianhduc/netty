@@ -59,9 +59,16 @@ public:
     [[nodiscard]] uint8_t read_ppu_memory(uint16_t addr) const;
     void write_ppu_memory(uint16_t addr, uint8_t data);
     [[nodiscard]] static uint8_t palette_index(uint16_t addr);
+    [[nodiscard]] bool is_sprite_0_hit(uint64_t cycle) const;
 
 public:
-    explicit NesPPU(std::vector<uint8_t> chr_rom, Mirroring mirroring): chr_rom(std::move(chr_rom)), mirroring(mirroring) {}
+    explicit NesPPU(std::vector<uint8_t> chr_rom, Mirroring mirroring,
+                    std::vector<uint8_t> chr_ram = {})
+        : chr_rom(std::move(chr_rom)), chr_ram(std::move(chr_ram)), mirroring(mirroring) {
+        if (this->chr_ram.empty()) {
+            this->chr_ram.resize(8192, 0);
+        }
+    }
 
     ;
 

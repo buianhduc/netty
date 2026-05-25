@@ -19,7 +19,7 @@ size_t clamp_bank(uint8_t bank, size_t bank_count) {
 }
 }
 
-Bus::Bus(const ROM &rom) : rom(rom), nes_ppu_(rom.chr_rom, rom.screen_mirroring) {
+Bus::Bus(const ROM &rom) : rom(rom), nes_ppu_(rom.chr_rom, rom.screen_mirroring, rom.chr_ram) {
     if (this->rom.mapper == 1) {
         update_mmc1_chr_banks();
         update_mmc1_mirroring();
@@ -264,7 +264,7 @@ uint8_t Bus::read(uint16_t address, bool readable) const {
             case 0x2003:
             case 0x2005:
             case 0x2006:
-                return nes_ppu_.read_open_bus();
+                return 0;
             case 0x2002:
                 return nes_ppu_.read_status();
             case 0x2004:
@@ -275,15 +275,18 @@ uint8_t Bus::read(uint16_t address, bool readable) const {
     }
 
     if (address == 0x4016) {
-        return static_cast<uint8_t>(0x40u | joypad_.read());
+        return joypad_.read();
     }
     if (address == 0x4017) {
-        return 0xff;
+        return 0;
     }
     if (std::clamp(address, static_cast<uint16_t>(0x4000u),
-        static_cast<uint16_t>(0x401fu)) == address) {
+        static_cast<uint16_t>(0x4015u)) == address) {
         // TODO: implement APU and I/O registers.
-        return 0xff;
+        return 0;
+    }
+    if (address == 0x4014) {
+        return 0;
     }
     if (std::clamp(address, static_cast<uint16_t>(0x4020u),
         static_cast<uint16_t>(0x5fffu)) == address) {

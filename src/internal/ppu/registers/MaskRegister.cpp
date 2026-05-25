@@ -25,7 +25,7 @@ bool MaskRegister::show_background() {
     return is_set(SHOW_BACKGROUND);
 }
 
-bool MaskRegister::show_sprite() {
+bool MaskRegister::show_sprite() const {
     return is_set(SHOW_SPRITE);
 }
 

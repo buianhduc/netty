@@ -18,6 +18,8 @@ class ROM {
     public:
     std::vector<uint8_t> prg_rom;
     std::vector<uint8_t> chr_rom;
+    std::vector<uint8_t> chr_ram;
+    bool uses_chr_ram = false;
     uint8_t mapper = 0;
     Mirroring screen_mirroring = Horizontal;
     ROM();

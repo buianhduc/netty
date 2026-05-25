@@ -5,6 +5,7 @@
 #include "Frame.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <stdexcept>
 
 namespace {
@@ -69,6 +70,51 @@ void render_tile(Frame& frame,
         }
     }
 }
+
+struct Rect {
+    size_t x1;
+    size_t y1;
+    size_t x2;
+    size_t y2;
+};
+
+void render_name_table(NesPPU& ppu,
+                       Frame& frame,
+                       uint16_t nametable_base,
+                       const Rect& view_port,
+                       int shift_x,
+                       int shift_y) {
+    const uint16_t pattern_base = ppu.controller_register.get_background_pattern_address();
+
+    for (uint16_t tile_index = 0; tile_index < 0x03c0; ++tile_index) {
+        const auto tile_id = ppu.peek_memory(static_cast<uint16_t>(nametable_base + tile_index));
+        const auto tile_column = tile_index % 32;
+        const auto tile_row = tile_index / 32;
+        const auto palette = bg_palette(ppu, nametable_base, tile_column, tile_row);
+        const auto tile_offset = static_cast<uint16_t>(pattern_base + tile_id * kTileBytes);
+
+        for (uint y = 0; y < kTileSize; ++y) {
+            const auto low_plane = ppu.peek_memory(static_cast<uint16_t>(tile_offset + y));
+            const auto high_plane = ppu.peek_memory(static_cast<uint16_t>(tile_offset + y + 8));
+            for (uint x = 0; x < kTileSize; ++x) {
+                const auto pixel_x = tile_column * kTileSize + x;
+                const auto pixel_y = tile_row * kTileSize + y;
+                if (pixel_x < view_port.x1 || pixel_x >= view_port.x2 ||
+                    pixel_y < view_port.y1 || pixel_y >= view_port.y2) {
+                    continue;
+                }
+
+                const uint8_t bit = static_cast<uint8_t>(7u - x);
+                const uint8_t value = static_cast<uint8_t>(
+                    ((low_plane >> bit) & 0x01u) | (((high_plane >> bit) & 0x01u) << 1));
+                const auto color = ColorHelper::SYSTEM_PALLETE[palette[value] & 0x3fu];
+                frame.set_pixel(static_cast<int>(pixel_x) + shift_x,
+                                static_cast<int>(pixel_y) + shift_y,
+                                color);
+            }
+        }
+    }
+}
 }
 
 Frame render_pattern_table(const std::vector<uint8_t>& chr_rom, uint bank,
@@ -130,29 +176,48 @@ std::array<uint8_t, 4> get_sprite_palette(const NesPPU & nes_ppu, int
 
 void render(NesPPU &nes_ppu, Frame &frame) {
     const uint16_t nametable_base = nes_ppu.controller_register.get_name_table_address();
-    const uint16_t pattern_base = nes_ppu.controller_register.get_background_pattern_address();
+    const size_t scroll_x = nes_ppu.scroll_register.x_scroll();
+    const size_t scroll_y = nes_ppu.scroll_register.y_scroll();
 
-    for (uint16_t tile_index = 0; tile_index < 0x03c0; tile_index++) {
-        const auto tile_id = nes_ppu.peek_memory(static_cast<uint16_t>(nametable_base + tile_index));
-        const auto tile_column = tile_index % 32;
-        const auto tile_row = tile_index / 32;
-        const auto palette = bg_palette(nes_ppu, nametable_base, tile_column, tile_row);
-        const auto tile_offset = static_cast<uint16_t>(pattern_base + tile_id * kTileBytes);
-        // Render BG
-        for (uint y = 0; y < kTileSize; ++y) {
-            const auto low_plane = nes_ppu.peek_memory(static_cast<uint16_t>(tile_offset + y));
-            const auto high_plane = nes_ppu.peek_memory(static_cast<uint16_t>(tile_offset + y + 8));
-            for (uint x = 0; x < kTileSize; ++x) {
-                const uint8_t bit = static_cast<uint8_t>(7u - x);
-                const uint8_t value = static_cast<uint8_t>(
-                    ((low_plane >> bit) & 0x01u) | (((high_plane >> bit) & 0x01u) << 1));
-                const auto color = ColorHelper::SYSTEM_PALLETE[palette[value] & 0x3fu];
-                frame.set_pixel(static_cast<int>(tile_column * kTileSize + x),
-                                static_cast<int>(tile_row * kTileSize + y),
-                                color);
-            }
-        }
+    uint16_t main_nametable = 0x2000;
+    uint16_t second_nametable = 0x2400;
+    const auto mirroring = nes_ppu.mirroring;
+    if ((mirroring == Vertical && (nametable_base == 0x2000 || nametable_base == 0x2800)) ||
+        (mirroring == Horizontal && (nametable_base == 0x2000 || nametable_base == 0x2400))) {
+        main_nametable = 0x2000;
+        second_nametable = 0x2400;
+    } else if ((mirroring == Vertical && (nametable_base == 0x2400 || nametable_base == 0x2c00)) ||
+               (mirroring == Horizontal && (nametable_base == 0x2800 || nametable_base == 0x2c00))) {
+        main_nametable = 0x2400;
+        second_nametable = 0x2000;
+    } else {
+        throw std::runtime_error("Unsupported mirroring type or nametable base");
+    }
 
+    render_name_table(
+        nes_ppu,
+        frame,
+        main_nametable,
+        Rect{scroll_x, scroll_y, 256, 240},
+        -static_cast<int>(scroll_x),
+        -static_cast<int>(scroll_y));
+
+    if (scroll_x > 0) {
+        render_name_table(
+            nes_ppu,
+            frame,
+            second_nametable,
+            Rect{0, 0, scroll_x, 240},
+            static_cast<int>(256 - scroll_x),
+            0);
+    } else if (scroll_y > 0) {
+        render_name_table(
+            nes_ppu,
+            frame,
+            second_nametable,
+            Rect{0, 0, 256, scroll_y},
+            0,
+            static_cast<int>(240 - scroll_y));
     }
 
     // Render Sprite
@@ -169,11 +234,9 @@ void render(NesPPU &nes_ppu, Frame &frame) {
         const auto sprite_palette = get_sprite_palette(nes_ppu, palette_idx);
         const auto bank = nes_ppu.controller_register.get_sprite_pattern_table_address();
         const auto tile_offset = static_cast<uint16_t>(bank + tile_idx * kTileBytes);
-        const auto tile = std::span<uint8_t>{nes_ppu.chr_rom.begin() +
-            tile_offset, nes_ppu.chr_rom.begin() + tile_offset + 16};
         for (int y = 0; y < static_cast<int>(kTileSize); ++y) {
-            auto low_plane = tile[y+8];
-            auto high_plane = tile[y];
+            auto low_plane = nes_ppu.peek_memory(static_cast<uint16_t>(tile_offset + y + 8));
+            auto high_plane = nes_ppu.peek_memory(static_cast<uint16_t>(tile_offset + y));
             for (int x = 0; x < static_cast<int>(kTileSize); ++x) {
                 const auto value = (1 & low_plane) << 1 | (1 & high_plane);
                 high_plane >>= 1;

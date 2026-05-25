@@ -178,3 +178,20 @@ TEST(FrameRendering, RendersBackgroundTileFromNametable) {
     EXPECT_EQ(frame.data[1], ColorHelper::SYSTEM_PALLETE[0x01].green);
     EXPECT_EQ(frame.data[2], ColorHelper::SYSTEM_PALLETE[0x01].blue);
 }
+
+TEST(FrameRendering, RendersSpriteTileFromChrRam) {
+    auto ppu = NesPPU({}, Mirroring::Horizontal, std::vector<uint8_t>(0x2000, 0));
+    ppu.chr_ram[0] = 0b10000000;
+    ppu.palette_table[0x11] = 0x01;
+    ppu.oam_data[0] = 0;
+    ppu.oam_data[1] = 0;
+    ppu.oam_data[2] = 0;
+    ppu.oam_data[3] = 0;
+
+    Frame frame;
+    render(ppu, frame);
+
+    EXPECT_EQ(frame.data[0], ColorHelper::SYSTEM_PALLETE[0x01].red);
+    EXPECT_EQ(frame.data[1], ColorHelper::SYSTEM_PALLETE[0x01].green);
+    EXPECT_EQ(frame.data[2], ColorHelper::SYSTEM_PALLETE[0x01].blue);
+}

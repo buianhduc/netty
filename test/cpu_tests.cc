@@ -277,6 +277,43 @@ TEST(CartridgeBus, ParsesMapperOneRomHeader) {
     EXPECT_EQ(rom.mapper, 1);
     EXPECT_EQ(rom.prg_rom.size(), 0x8000);
     EXPECT_EQ(rom.chr_rom.size(), 0x4000);
+    EXPECT_FALSE(rom.uses_chr_ram);
+    EXPECT_TRUE(rom.chr_ram.empty());
+}
+
+TEST(CartridgeBus, ParsesChrRamWhenHeaderHasNoChrRomBanks) {
+    std::vector<uint8_t> raw = {
+        0x4e, 0x45, 0x53, 0x1a,
+        0x08, 0x00, 0x12, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00
+    };
+    raw.resize(16 + 0x20000, 0);
+
+    const ROM rom(raw);
+
+    EXPECT_EQ(rom.mapper, 1);
+    EXPECT_EQ(rom.prg_rom.size(), 0x20000);
+    EXPECT_TRUE(rom.chr_rom.empty());
+    EXPECT_TRUE(rom.uses_chr_ram);
+    EXPECT_EQ(rom.chr_ram.size(), 0x2000);
+}
+
+TEST(CartridgeBus, ChrRamIsWritableThroughPpuDataRegister) {
+    std::vector<uint8_t> raw = {
+        0x4e, 0x45, 0x53, 0x1a,
+        0x01, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00
+    };
+    raw.resize(16 + 0x4000, 0);
+    CPU cpu{ROM(raw)};
+
+    cpu.bus.write(0x2006, 0x00, true);
+    cpu.bus.write(0x2006, 0x10, true);
+    cpu.bus.write(0x2007, 0x42, true);
+
+    EXPECT_EQ(cpu.bus.ppu().peek_memory(0x0010), 0x42);
 }
 
 TEST(CartridgeBus, MapperOneSwitchesPrgBanks) {

@@ -189,7 +189,7 @@ int main(int argc, char* argv[]) {
     // try {
         cpu.interpret_with_callback([&frame, &key_map, winSurface,
                 window](CPU* cpu){
-            if (cpu->bus.take_frame_complete()) {
+            if (cpu->bus.take_nmi_frame_event()) {
                 SDL_Event event;
                 while (SDL_PollEvent(&event)) {
                     if (event.type == SDL_QUIT) {

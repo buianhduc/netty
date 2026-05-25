@@ -44,4 +44,4 @@ vcpkg-manifest-install.log
 # Nes and dump files
 *.nes
 *.log
-/rom/*
+./rom/*

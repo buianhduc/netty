@@ -48,7 +48,7 @@ class MaskRegister : PPURegister{
         bool leftmopst_8pxl_background();
         bool leftmopst_8pxl_sprite();
         bool show_background();
-        bool show_sprite();
+        bool show_sprite() const;
         std::vector<Color> emphasise();
 
 };
